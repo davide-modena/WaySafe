@@ -1,0 +1,8 @@
+{
+  "short_name": "WaySafe",
+  "name": "WaySafe",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#1d9e75",
+  "background_color": "#ffffff"
+}
