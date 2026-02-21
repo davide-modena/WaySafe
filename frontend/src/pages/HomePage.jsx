@@ -1,8 +1,9 @@
+import MapView from '../components/Map/MapView';
+
 function HomePage() {
   return (
-    <main className="home">
-      <h1>WaySafe</h1>
-      <p>La mappa interattiva sarà disponibile a breve.</p>
+    <main className="home-map">
+      <MapView />
     </main>
   );
 }
