@@ -46,6 +46,12 @@ npm start
 Il backend espone le API su `http://localhost:5000/api/v1`, il frontend gira su
 `http://localhost:3000`.
 
+## Strategia di branching
+
+Il progetto usa un modello GitFlow semplificato: `main` per la produzione,
+`develop` per l'integrazione e branch `feature/<nome>` per le singole
+funzionalità.
+
 ## Variabili d'ambiente
 
 Le variabili necessarie sono elencate nei file `.env.example` di `backend/` e
