@@ -1,0 +1,17 @@
+[
+  { "id": "I001", "lat": 46.0695, "lng": 11.1225, "tipo": "aggressione", "data": "2026-06-07", "count": 1 },
+  { "id": "I002", "lat": 46.0758, "lng": 11.1218, "tipo": "furto", "data": "2026-06-06", "count": 2 },
+  { "id": "I003", "lat": 46.0850, "lng": 11.1250, "tipo": "vandalismo", "data": "2026-06-05", "count": 1 },
+  { "id": "I004", "lat": 46.0618, "lng": 11.1193, "tipo": "furto", "data": "2026-06-04", "count": 3 },
+  { "id": "I005", "lat": 46.0810, "lng": 11.1320, "tipo": "aggressione", "data": "2026-06-03", "count": 1 },
+  { "id": "I006", "lat": 46.0700, "lng": 11.1165, "tipo": "rissa", "data": "2026-06-02", "count": 1 },
+  { "id": "I007", "lat": 46.0780, "lng": 11.1290, "tipo": "furto", "data": "2026-06-01", "count": 2 },
+  { "id": "I008", "lat": 46.0695, "lng": 11.1230, "tipo": "molestie", "data": "2026-05-31", "count": 1 },
+  { "id": "I009", "lat": 46.0760, "lng": 11.1170, "tipo": "vandalismo", "data": "2026-05-30", "count": 2 },
+  { "id": "I010", "lat": 46.0850, "lng": 11.1260, "tipo": "furto", "data": "2026-05-29", "count": 1 },
+  { "id": "I011", "lat": 46.0620, "lng": 11.1150, "tipo": "aggressione", "data": "2026-05-28", "count": 1 },
+  { "id": "I012", "lat": 46.0730, "lng": 11.1215, "tipo": "borseggio", "data": "2026-05-27", "count": 2 },
+  { "id": "I013", "lat": 46.0668, "lng": 11.1213, "tipo": "borseggio", "data": "2026-05-25", "count": 1 },
+  { "id": "I014", "lat": 46.0640, "lng": 11.1240, "tipo": "furto", "data": "2026-05-20", "count": 1 },
+  { "id": "I015", "lat": 46.0810, "lng": 11.1310, "tipo": "rissa", "data": "2026-05-15", "count": 1 }
+]

@@ -1,0 +1,22 @@
+[
+  { "id": "F001", "lat": 46.0730, "lng": 11.1215, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-08T08:00:00Z" },
+  { "id": "F002", "lat": 46.0668, "lng": 11.1213, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-08T07:30:00Z" },
+  { "id": "F003", "lat": 46.0695, "lng": 11.1225, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-07T22:00:00Z" },
+  { "id": "F004", "lat": 46.0758, "lng": 11.1218, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-07T21:30:00Z" },
+  { "id": "F005", "lat": 46.0618, "lng": 11.1193, "radiusM": 100, "valutazione": "trafficato", "createdAt": "2026-06-07T17:00:00Z" },
+  { "id": "F006", "lat": 46.0850, "lng": 11.1250, "radiusM": 100, "valutazione": "buio", "createdAt": "2026-06-07T23:00:00Z" },
+  { "id": "F007", "lat": 46.0712, "lng": 11.1180, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-07T10:00:00Z" },
+  { "id": "F008", "lat": 46.0780, "lng": 11.1290, "radiusM": 80, "valutazione": "trafficato", "createdAt": "2026-06-07T08:30:00Z" },
+  { "id": "F009", "lat": 46.0810, "lng": 11.1320, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-06T23:30:00Z" },
+  { "id": "F010", "lat": 46.0660, "lng": 11.1490, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-06T12:00:00Z" },
+  { "id": "F011", "lat": 46.0700, "lng": 11.1165, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-06T22:00:00Z" },
+  { "id": "F012", "lat": 46.0640, "lng": 11.1240, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-06T09:00:00Z" },
+  { "id": "F013", "lat": 46.0748, "lng": 11.1155, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-05T22:30:00Z" },
+  { "id": "F014", "lat": 46.0720, "lng": 11.1200, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-05T11:00:00Z" },
+  { "id": "F015", "lat": 46.0580, "lng": 11.1200, "radiusM": 100, "valutazione": "buio", "createdAt": "2026-06-05T23:00:00Z" },
+  { "id": "F016", "lat": 46.0680, "lng": 11.1175, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-05T09:30:00Z" },
+  { "id": "F017", "lat": 46.0760, "lng": 11.1170, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-04T22:00:00Z" },
+  { "id": "F018", "lat": 46.0690, "lng": 11.1300, "radiusM": 80, "valutazione": "trafficato", "createdAt": "2026-06-04T08:00:00Z" },
+  { "id": "F019", "lat": 46.0670, "lng": 11.1130, "radiusM": 80, "valutazione": "buio", "createdAt": "2026-06-03T23:00:00Z" },
+  { "id": "F020", "lat": 46.0800, "lng": 11.1200, "radiusM": 80, "valutazione": "sicuro", "createdAt": "2026-06-03T10:00:00Z" }
+]

@@ -1,0 +1,22 @@
+[
+  { "id": "C001", "lat": 46.0668, "lng": 11.1213, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C002", "lat": 46.0672, "lng": 11.1220, "radiusM": 80, "attiva": true, "tipo": "ptz" },
+  { "id": "C003", "lat": 46.0618, "lng": 11.1193, "radiusM": 100, "attiva": true, "tipo": "fisso" },
+  { "id": "C004", "lat": 46.0625, "lng": 11.1200, "radiusM": 60, "attiva": false, "tipo": "fisso" },
+  { "id": "C005", "lat": 46.0730, "lng": 11.1215, "radiusM": 70, "attiva": true, "tipo": "ptz" },
+  { "id": "C006", "lat": 46.0712, "lng": 11.1180, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C007", "lat": 46.0748, "lng": 11.1155, "radiusM": 60, "attiva": false, "tipo": "fisso" },
+  { "id": "C008", "lat": 46.0758, "lng": 11.1218, "radiusM": 70, "attiva": true, "tipo": "fisso" },
+  { "id": "C009", "lat": 46.0695, "lng": 11.1225, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C010", "lat": 46.0780, "lng": 11.1290, "radiusM": 60, "attiva": true, "tipo": "ptz" },
+  { "id": "C011", "lat": 46.0660, "lng": 11.1490, "radiusM": 80, "attiva": true, "tipo": "fisso" },
+  { "id": "C012", "lat": 46.0665, "lng": 11.1500, "radiusM": 60, "attiva": false, "tipo": "fisso" },
+  { "id": "C013", "lat": 46.0700, "lng": 11.1165, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C014", "lat": 46.0640, "lng": 11.1240, "radiusM": 70, "attiva": true, "tipo": "ptz" },
+  { "id": "C015", "lat": 46.0680, "lng": 11.1175, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C016", "lat": 46.0850, "lng": 11.1250, "radiusM": 50, "attiva": false, "tipo": "fisso" },
+  { "id": "C017", "lat": 46.0720, "lng": 11.1200, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C018", "lat": 46.0690, "lng": 11.1300, "radiusM": 70, "attiva": true, "tipo": "fisso" },
+  { "id": "C019", "lat": 46.0650, "lng": 11.1260, "radiusM": 60, "attiva": true, "tipo": "fisso" },
+  { "id": "C020", "lat": 46.0810, "lng": 11.1320, "radiusM": 50, "attiva": false, "tipo": "fisso" }
+]
