@@ -1,9 +1,16 @@
+.map-shell {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
 .map-view {
   width: 100%;
   height: 100%;
 }
 
 @media (max-width: 600px) {
+  .map-shell,
   .map-view {
     height: 100vh;
   }

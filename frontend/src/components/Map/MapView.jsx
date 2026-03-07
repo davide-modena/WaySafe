@@ -1,4 +1,6 @@
 import { MapContainer, TileLayer } from 'react-leaflet';
+import HeatmapLayer from './HeatmapLayer';
+import HeatmapLegend from './HeatmapLegend';
 import './MapView.css';
 
 const DEFAULT_CENTER = [
@@ -9,18 +11,22 @@ const DEFAULT_ZOOM = Number(process.env.REACT_APP_DEFAULT_ZOOM) || 14;
 
 function MapView({ children }) {
   return (
-    <MapContainer
-      className="map-view"
-      center={DEFAULT_CENTER}
-      zoom={DEFAULT_ZOOM}
-      scrollWheelZoom
-    >
-      <TileLayer
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-      />
-      {children}
-    </MapContainer>
+    <div className="map-shell">
+      <MapContainer
+        className="map-view"
+        center={DEFAULT_CENTER}
+        zoom={DEFAULT_ZOOM}
+        scrollWheelZoom
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <HeatmapLayer />
+        {children}
+      </MapContainer>
+      <HeatmapLegend />
+    </div>
   );
 }
 

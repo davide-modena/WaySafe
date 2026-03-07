@@ -1,0 +1,31 @@
+.heatmap-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  z-index: 1000;
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 8px;
+  padding: 10px 12px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.2);
+  font-size: 12px;
+  color: #1f2933;
+}
+
+.heatmap-legend-title {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.heatmap-legend-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 2px 0;
+}
+
+.heatmap-legend-swatch {
+  width: 16px;
+  height: 4px;
+  border-radius: 2px;
+}
