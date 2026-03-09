@@ -1,12 +1,16 @@
 .navbar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1100;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 54px;
   padding: 0 18px;
   background: #ffffff;
-  border-bottom: 1px solid #e5e7eb;
-  flex-shrink: 0;
+  border-top: 1px solid #e5e7eb;
 }
 
 .navbar-brand {
