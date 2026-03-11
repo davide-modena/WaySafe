@@ -6,7 +6,11 @@ const interventionSchema = new mongoose.Schema(
       type: { type: String, enum: ['Point'], default: 'Point' },
       coordinates: { type: [Number], required: true }
     },
-    tipo: { type: String, enum: ['furto', 'aggressione', 'vandalismo', 'altro'], default: 'altro' },
+    tipo: {
+      type: String,
+      enum: ['furto', 'borseggio', 'aggressione', 'molestie', 'rissa', 'vandalismo', 'altro'],
+      default: 'altro'
+    },
     data: { type: Date, required: true },
     count: { type: Number, default: 1 }
   },
