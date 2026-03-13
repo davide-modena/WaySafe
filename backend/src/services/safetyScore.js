@@ -40,18 +40,18 @@ const basePerTipo = {
   trunk: 60,
   trunk_link: 58,
   secondary_link: 58,
+  pedestrian: 58,
+  living_street: 54,
   tertiary: 52,
+  residential: 52,
   tertiary_link: 50,
-  residential: 48,
-  pedestrian: 52,
-  living_street: 50,
+  footway: 45,
+  cycleway: 45,
+  service: 40,
   unclassified: 38,
-  service: 35,
-  footway: 30,
-  cycleway: 30,
-  path: 25,
-  track: 20,
-  steps: 22
+  path: 38,
+  steps: 35,
+  track: 32
 };
 
 const densitaPunteggio = { alta: 12, media: 6, bassa: 0 };
@@ -134,7 +134,7 @@ function calcolaPunteggio(feature, fonti) {
   score = Math.max(0, Math.min(100, Math.round(score)));
 
   const level =
-    score >= 70 ? 'safe' : score >= 50 ? 'moderate' : score >= 35 ? 'risk' : 'danger';
+    score >= 65 ? 'safe' : score >= 45 ? 'moderate' : score >= 30 ? 'risk' : 'danger';
 
   return { score, level };
 }
