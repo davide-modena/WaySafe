@@ -19,7 +19,9 @@ function Navbar() {
       <nav className="navbar-links">
         {isAuthenticated ? (
           <>
-            <span className="navbar-user">{user ? user.nome : 'Account'}</span>
+            <Link to="/profile" className="navbar-user">
+              {user ? user.nome : 'Profilo'}
+            </Link>
             <button type="button" className="navbar-logout" onClick={onLogout}>
               Esci
             </button>
