@@ -27,16 +27,20 @@ async function register(req, res) {
     return res.status(400).json({ error: 'Campi obbligatori mancanti' });
   }
 
-  const esistente = await User.findOne({ email });
-  if (esistente) {
-    return res.status(409).json({ error: 'Email già registrata' });
+  try {
+    const esistente = await User.findOne({ email });
+    if (esistente) {
+      return res.status(409).json({ error: 'Email già registrata' });
+    }
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await User.create({ nome, cognome, email, passwordHash });
+    const token = signToken(user);
+
+    res.status(201).json({ token, user: publicUser(user) });
+  } catch (err) {
+    res.status(500).json({ error: 'Errore durante la registrazione' });
   }
-
-  const passwordHash = await bcrypt.hash(password, 10);
-  const user = await User.create({ nome, cognome, email, passwordHash });
-  const token = signToken(user);
-
-  res.status(201).json({ token, user: publicUser(user) });
 }
 
 async function login(req, res) {
@@ -45,18 +49,22 @@ async function login(req, res) {
     return res.status(400).json({ error: 'Credenziali mancanti' });
   }
 
-  const user = await User.findOne({ email });
-  if (!user || !user.passwordHash) {
-    return res.status(401).json({ error: 'Credenziali non valide' });
-  }
+  try {
+    const user = await User.findOne({ email });
+    if (!user || !user.passwordHash) {
+      return res.status(401).json({ error: 'Credenziali non valide' });
+    }
 
-  const valida = await bcrypt.compare(password, user.passwordHash);
-  if (!valida) {
-    return res.status(401).json({ error: 'Credenziali non valide' });
-  }
+    const valida = await bcrypt.compare(password, user.passwordHash);
+    if (!valida) {
+      return res.status(401).json({ error: 'Credenziali non valide' });
+    }
 
-  const token = signToken(user);
-  res.json({ token, user: publicUser(user) });
+    const token = signToken(user);
+    res.json({ token, user: publicUser(user) });
+  } catch (err) {
+    res.status(500).json({ error: 'Errore durante l\'accesso' });
+  }
 }
 
 module.exports = { register, login, signToken, publicUser };
