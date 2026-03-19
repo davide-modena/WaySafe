@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import HeatmapLayer from './HeatmapLayer';
 import HeatmapLegend from './HeatmapLegend';
+import ReportMarkers from './ReportMarkers';
 import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
 import './MapView.css';
@@ -28,6 +29,7 @@ function MapView({ children }) {
           url="https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
         />
         <HeatmapLayer />
+        <ReportMarkers />
         <ZoneClickHandler onResult={setZona} onError={() => setZona(null)} />
         {children}
       </MapContainer>
