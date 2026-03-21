@@ -5,6 +5,7 @@ import HeatmapLegend from './HeatmapLegend';
 import ReportMarkers from './ReportMarkers';
 import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
+import EmergencyButton from '../Emergency/EmergencyButton';
 import './MapView.css';
 
 const DEFAULT_CENTER = [
@@ -35,6 +36,7 @@ function MapView({ children }) {
       </MapContainer>
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />
+      <EmergencyButton />
     </div>
   );
 }
