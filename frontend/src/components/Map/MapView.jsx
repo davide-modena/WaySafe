@@ -3,9 +3,11 @@ import { MapContainer, TileLayer } from 'react-leaflet';
 import HeatmapLayer from './HeatmapLayer';
 import HeatmapLegend from './HeatmapLegend';
 import ReportMarkers from './ReportMarkers';
+import RoutePoints from './RoutePoints';
 import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
 import EmergencyButton from '../Emergency/EmergencyButton';
+import RoutePlanner from '../Routing/RoutePlanner';
 import './MapView.css';
 
 const DEFAULT_CENTER = [
@@ -27,6 +29,8 @@ function isNotte() {
 function MapView({ children }) {
   const [zona, setZona] = useState(null);
   const [notte, setNotte] = useState(isNotte());
+  const [partenza, setPartenza] = useState(null);
+  const [destinazione, setDestinazione] = useState(null);
 
   useEffect(() => {
     const id = setInterval(() => setNotte(isNotte()), 60000);
@@ -44,9 +48,15 @@ function MapView({ children }) {
         <TileLayer key={notte ? 'notte' : 'giorno'} attribution={TILE_ATTR} url={notte ? TILE_NOTTE : TILE_GIORNO} />
         <HeatmapLayer />
         <ReportMarkers />
+        <RoutePoints partenza={partenza} destinazione={destinazione} />
         <ZoneClickHandler onResult={setZona} onError={() => setZona(null)} />
         {children}
       </MapContainer>
+      <RoutePlanner
+        onPartenza={setPartenza}
+        onDestinazione={setDestinazione}
+        pronto={Boolean(partenza && destinazione)}
+      />
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />
       <EmergencyButton />
