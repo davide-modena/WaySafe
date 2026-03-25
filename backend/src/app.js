@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth.routes');
 const heatmapRoutes = require('./routes/heatmap.routes');
 const reportsRoutes = require('./routes/reports.routes');
 const emergencyRoutes = require('./routes/emergency.routes');
+const usersRoutes = require('./routes/users.routes');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/heatmap', heatmapRoutes);
 app.use('/api/v1/reports', reportsRoutes);
 app.use('/api/v1/emergency', emergencyRoutes);
+app.use('/api/v1/users', usersRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Risorsa non trovata' });
