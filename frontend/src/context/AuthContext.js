@@ -53,6 +53,11 @@ export function AuthProvider({ children }) {
     setUser(null);
   }
 
+  function updateUser(nextUser) {
+    localStorage.setItem('waysafe_user', JSON.stringify(nextUser));
+    setUser(nextUser);
+  }
+
   const value = {
     token,
     user,
@@ -60,6 +65,7 @@ export function AuthProvider({ children }) {
     login,
     register,
     loginConToken,
+    updateUser,
     logout
   };
 
