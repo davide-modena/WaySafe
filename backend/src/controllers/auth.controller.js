@@ -17,6 +17,8 @@ function publicUser(user) {
     cognome: user.cognome,
     email: user.email,
     ruolo: user.ruolo,
+    percorsoPreferito: user.percorsoPreferito,
+    notifiche: user.notifiche,
     lingua: user.lingua
   };
 }
