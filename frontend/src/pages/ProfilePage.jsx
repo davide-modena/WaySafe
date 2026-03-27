@@ -31,11 +31,10 @@ function ProfilePage() {
           notifiche: data.notifiche !== false,
           lingua: data.lingua || 'it'
         });
-        updateUser(data);
         setCaricato(true);
       })
       .catch(() => setErrore('Impossibile caricare il profilo'));
-  }, [updateUser]);
+  }, []);
 
   function campo(nome) {
     return (e) => setForm((f) => ({ ...f, [nome]: e.target.value }));
