@@ -53,6 +53,28 @@
   color: #6b7280;
 }
 
+.emergency-luogo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.emergency-luogo-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+
+.emergency-luogo strong {
+  font-size: 15px;
+  color: #1f2933;
+}
+
 .emergency-numbers {
   list-style: none;
   margin: 0 0 12px;
