@@ -6,8 +6,11 @@ import ReportMarkers from './ReportMarkers';
 import RoutePoints from './RoutePoints';
 import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
+import ReportPickHandler from './ReportPickHandler';
 import EmergencyButton from '../Emergency/EmergencyButton';
+import ReportControl from '../Reports/ReportControl';
 import RoutePlanner from '../Routing/RoutePlanner';
+import { reverseGeocode } from '../../services/geocode';
 import './MapView.css';
 
 const DEFAULT_CENTER = [
@@ -31,11 +34,25 @@ function MapView({ children }) {
   const [notte, setNotte] = useState(isNotte());
   const [partenza, setPartenza] = useState(null);
   const [destinazione, setDestinazione] = useState(null);
+  const [pickMode, setPickMode] = useState(false);
+  const [reportPunto, setReportPunto] = useState(null);
 
   useEffect(() => {
     const id = setInterval(() => setNotte(isNotte()), 60000);
     return () => clearInterval(id);
   }, []);
+
+  async function scegliPunto(latlng) {
+    setPickMode(false);
+    setReportPunto({ lat: latlng.lat, lng: latlng.lng, indirizzo: null });
+    const indirizzo = await reverseGeocode(latlng.lat, latlng.lng);
+    setReportPunto({ lat: latlng.lat, lng: latlng.lng, indirizzo });
+  }
+
+  function resetReport() {
+    setPickMode(false);
+    setReportPunto(null);
+  }
 
   return (
     <div className="map-shell">
@@ -49,7 +66,11 @@ function MapView({ children }) {
         <HeatmapLayer />
         <ReportMarkers />
         <RoutePoints partenza={partenza} destinazione={destinazione} />
-        <ZoneClickHandler onResult={setZona} onError={() => setZona(null)} />
+        {pickMode ? (
+          <ReportPickHandler onPick={scegliPunto} />
+        ) : (
+          <ZoneClickHandler onResult={setZona} onError={() => setZona(null)} />
+        )}
         {children}
       </MapContainer>
       <RoutePlanner
@@ -59,6 +80,14 @@ function MapView({ children }) {
       />
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />
+      <ReportControl
+        punto={reportPunto}
+        pickMode={pickMode}
+        onAvviaPick={() => setPickMode(true)}
+        onAnnullaPick={() => setPickMode(false)}
+        onSetPunto={setReportPunto}
+        onReset={resetReport}
+      />
       <EmergencyButton />
     </div>
   );
