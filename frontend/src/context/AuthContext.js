@@ -41,8 +41,17 @@ export function AuthProvider({ children }) {
     return data.user;
   }
 
-  function loginConToken(nextToken) {
-    persist(nextToken, null);
+  async function loginConToken(nextToken) {
+    localStorage.setItem('waysafe_token', nextToken);
+    setAuthHeader(nextToken);
+    setToken(nextToken);
+    try {
+      const { data } = await api.get('/users/me');
+      localStorage.setItem('waysafe_user', JSON.stringify(data));
+      setUser(data);
+    } catch {
+      setUser(null);
+    }
   }
 
   function logout() {
