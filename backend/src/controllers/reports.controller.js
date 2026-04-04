@@ -1,4 +1,7 @@
 const Report = require('../models/Report');
+const { invalidaCache } = require('../services/heatmap.service');
+
+const statiValidi = ['in_attesa', 'approvata', 'rifiutata', 'risolta', 'archiviata'];
 
 async function createReport(req, res) {
   const { categoria, lat, lng, descrizione } = req.body;
@@ -43,4 +46,46 @@ async function listReports(req, res) {
   }
 }
 
-module.exports = { createReport, listReports };
+async function listOperatorReports(req, res) {
+  const { stato } = req.query;
+  const filtro = {};
+  if (stato) {
+    if (!statiValidi.includes(stato)) {
+      return res.status(400).json({ error: 'Stato non valido' });
+    }
+    filtro.stato = stato;
+  } else {
+    filtro.stato = 'in_attesa';
+  }
+
+  try {
+    const reports = await Report.find(filtro)
+      .sort({ createdAt: -1 })
+      .limit(500)
+      .populate('userId', 'nome cognome email')
+      .lean();
+    res.json(reports);
+  } catch (err) {
+    res.status(500).json({ error: 'Errore durante il recupero delle segnalazioni' });
+  }
+}
+
+async function updateReportStato(req, res) {
+  const { stato } = req.body;
+  if (!statiValidi.includes(stato)) {
+    return res.status(400).json({ error: 'Stato non valido' });
+  }
+
+  try {
+    const report = await Report.findByIdAndUpdate(req.params.id, { stato }, { new: true });
+    if (!report) {
+      return res.status(404).json({ error: 'Segnalazione non trovata' });
+    }
+    invalidaCache();
+    res.json(report);
+  } catch (err) {
+    res.status(500).json({ error: 'Errore durante l\'aggiornamento della segnalazione' });
+  }
+}
+
+module.exports = { createReport, listReports, listOperatorReports, updateReportStato };
