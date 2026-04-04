@@ -1,5 +1,5 @@
 const express = require('express');
-const { calcolaPercorsoSicuro } = require('../services/routing.service');
+const { calcolaPercorsoSicuro, calcolaPercorsoBilanciato } = require('../services/routing.service');
 
 const router = express.Router();
 
@@ -18,6 +18,20 @@ router.post('/safest', async (req, res) => {
 
   try {
     const risultato = await calcolaPercorsoSicuro(punti.start, punti.end);
+    res.json(risultato);
+  } catch (err) {
+    res.status(502).json({ error: 'Calcolo percorso non riuscito' });
+  }
+});
+
+router.post('/balanced', async (req, res) => {
+  const punti = leggiPunti(req);
+  if (!punti) {
+    return res.status(400).json({ error: 'start e end con lat/lng numerici sono richiesti' });
+  }
+
+  try {
+    const risultato = await calcolaPercorsoBilanciato(punti.start, punti.end, req.body.pesi);
     res.json(risultato);
   } catch (err) {
     res.status(502).json({ error: 'Calcolo percorso non riuscito' });

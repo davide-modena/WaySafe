@@ -84,4 +84,34 @@ async function calcolaPercorsoSicuro(start, end) {
   return { start, end, route: safest, alternatives: resto };
 }
 
-module.exports = { calcolaPercorsoSicuro, osrmPercorsi, valutaPercorso };
+function normalizzaPesi(pesi) {
+  const sicurezza = Number.isFinite(pesi && pesi.sicurezza) ? Math.max(0, pesi.sicurezza) : 0.6;
+  const rapidita = Number.isFinite(pesi && pesi.rapidita) ? Math.max(0, pesi.rapidita) : 0.4;
+  const totale = sicurezza + rapidita || 1;
+  return { sicurezza: sicurezza / totale, rapidita: rapidita / totale };
+}
+
+async function calcolaPercorsoBilanciato(start, end, pesi) {
+  const geojson = await buildHeatmap();
+  const routes = await osrmPercorsi(start, end, true);
+  const pesiNorm = normalizzaPesi(pesi);
+  const valutati = routes.map((r) => valutaPercorso(r, geojson));
+
+  const distanze = valutati.map((v) => v.distanceM);
+  const minD = Math.min(...distanze);
+  const maxD = Math.max(...distanze);
+  const range = maxD - minD || 1;
+
+  const conUtilita = valutati.map((v) => {
+    const sicurezzaNorm = v.safetyScore / 100;
+    const rapiditaNorm = 1 - (v.distanceM - minD) / range;
+    const utilita = pesiNorm.sicurezza * sicurezzaNorm + pesiNorm.rapidita * rapiditaNorm;
+    return { ...v, utilita: Math.round(utilita * 100) };
+  });
+
+  conUtilita.sort((a, b) => b.utilita - a.utilita);
+  const [migliore, ...resto] = conUtilita;
+  return { start, end, pesi: pesiNorm, route: migliore, alternatives: resto };
+}
+
+module.exports = { calcolaPercorsoSicuro, calcolaPercorsoBilanciato, osrmPercorsi, valutaPercorso };
