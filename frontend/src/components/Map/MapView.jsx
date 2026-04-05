@@ -7,9 +7,12 @@ import RoutePoints from './RoutePoints';
 import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
 import ReportPickHandler from './ReportPickHandler';
+import RouteDisplay from './RouteDisplay';
 import EmergencyButton from '../Emergency/EmergencyButton';
 import ReportControl from '../Reports/ReportControl';
 import RoutePlanner from '../Routing/RoutePlanner';
+import RoutePanel from '../Routing/RoutePanel';
+import api from '../../services/api';
 import { reverseGeocode } from '../../services/geocode';
 import './MapView.css';
 
@@ -36,11 +39,43 @@ function MapView({ children }) {
   const [destinazione, setDestinazione] = useState(null);
   const [pickMode, setPickMode] = useState(false);
   const [reportPunto, setReportPunto] = useState(null);
+  const [percorsi, setPercorsi] = useState([]);
+  const [selezionato, setSelezionato] = useState(0);
+  const [routeStato, setRouteStato] = useState('idle');
 
   useEffect(() => {
     const id = setInterval(() => setNotte(isNotte()), 60000);
     return () => clearInterval(id);
   }, []);
+
+  async function calcolaPercorso() {
+    if (!partenza || !destinazione) return;
+    setRouteStato('loading');
+    const body = {
+      start: { lat: partenza.lat, lng: partenza.lng },
+      end: { lat: destinazione.lat, lng: destinazione.lng }
+    };
+
+    try {
+      const [sicuro, bilanciato] = await Promise.all([
+        api.post('/routes/safest', body),
+        api.post('/routes/balanced', body)
+      ]);
+      setPercorsi([
+        { tipo: 'safest', ...sicuro.data.route },
+        { tipo: 'balanced', ...bilanciato.data.route }
+      ]);
+      setSelezionato(0);
+      setRouteStato('ok');
+    } catch {
+      setRouteStato('error');
+    }
+  }
+
+  function chiudiPercorsi() {
+    setPercorsi([]);
+    setRouteStato('idle');
+  }
 
   async function scegliPunto(latlng) {
     setPickMode(false);
@@ -66,6 +101,9 @@ function MapView({ children }) {
         <HeatmapLayer />
         <ReportMarkers />
         <RoutePoints partenza={partenza} destinazione={destinazione} />
+        {percorsi.length > 0 && (
+          <RouteDisplay percorsi={percorsi} selezionato={selezionato} onSeleziona={setSelezionato} />
+        )}
         {pickMode ? (
           <ReportPickHandler onPick={scegliPunto} />
         ) : (
@@ -77,6 +115,14 @@ function MapView({ children }) {
         onPartenza={setPartenza}
         onDestinazione={setDestinazione}
         pronto={Boolean(partenza && destinazione)}
+        onCalcola={calcolaPercorso}
+        stato={routeStato}
+      />
+      <RoutePanel
+        percorsi={percorsi}
+        selezionato={selezionato}
+        onSeleziona={setSelezionato}
+        onChiudi={chiudiPercorsi}
       />
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />

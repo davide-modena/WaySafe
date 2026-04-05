@@ -1,0 +1,97 @@
+.route-panel {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 54px;
+  z-index: 1500;
+  max-height: 46vh;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -3px 14px rgba(0, 0, 0, 0.18);
+  padding: 16px 16px 8px;
+}
+
+.route-panel-close {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  border: none;
+  background: none;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  color: #6b7280;
+}
+
+.route-tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.route-tab {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  align-items: flex-start;
+  padding: 10px 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  cursor: pointer;
+  text-align: left;
+}
+
+.route-tab.attiva {
+  border-color: #1d9e75;
+  box-shadow: inset 0 0 0 1px #1d9e75;
+}
+
+.route-tab-nome {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.route-tab-meta {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.route-badge {
+  margin-top: 2px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.route-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
+.route-steps li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 4px;
+  border-bottom: 1px solid #f1f3f5;
+  font-size: 13px;
+}
+
+.route-step-testo {
+  color: #1f2933;
+}
+
+.route-step-dist {
+  flex-shrink: 0;
+  color: #9ca3af;
+  font-size: 12px;
+}

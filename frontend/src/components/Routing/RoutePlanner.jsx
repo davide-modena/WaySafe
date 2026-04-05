@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import AddressInput from './AddressInput';
 import './RoutePlanner.css';
 
-function RoutePlanner({ onPartenza, onDestinazione, pronto }) {
-  const [nota, setNota] = useState('');
-
+function RoutePlanner({ onPartenza, onDestinazione, pronto, onCalcola, stato }) {
   return (
     <div className="route-planner">
       <AddressInput placeholder="Partenza" onSelect={onPartenza} />
@@ -12,12 +9,12 @@ function RoutePlanner({ onPartenza, onDestinazione, pronto }) {
       <button
         type="button"
         className="route-calcola"
-        disabled={!pronto}
-        onClick={() => setNota('Il calcolo del percorso sicuro/bilanciato sarà disponibile a breve.')}
+        disabled={!pronto || stato === 'loading'}
+        onClick={onCalcola}
       >
-        Calcola percorso
+        {stato === 'loading' ? 'Calcolo in corso…' : 'Calcola percorso'}
       </button>
-      {nota && <p className="route-nota">{nota}</p>}
+      {stato === 'error' && <p className="route-nota">Impossibile calcolare il percorso. Riprova.</p>}
     </div>
   );
 }
