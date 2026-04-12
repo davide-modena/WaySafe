@@ -8,6 +8,7 @@ const heatmapRoutes = require('./routes/heatmap.routes');
 const routesRoutes = require('./routes/routes.routes');
 const reportsRoutes = require('./routes/reports.routes');
 const operatorRoutes = require('./routes/operator.routes');
+const statsRoutes = require('./routes/stats.routes');
 const emergencyRoutes = require('./routes/emergency.routes');
 const usersRoutes = require('./routes/users.routes');
 
@@ -23,6 +24,7 @@ app.use('/api/v1/heatmap', heatmapRoutes);
 app.use('/api/v1/routes', routesRoutes);
 app.use('/api/v1/reports', reportsRoutes);
 app.use('/api/v1/operator', operatorRoutes);
+app.use('/api/v1/stats', statsRoutes);
 app.use('/api/v1/emergency', emergencyRoutes);
 app.use('/api/v1/users', usersRoutes);
 
