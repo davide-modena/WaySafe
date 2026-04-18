@@ -14,6 +14,7 @@ import RoutePlanner from '../Routing/RoutePlanner';
 import RoutePanel from '../Routing/RoutePanel';
 import useRouting from '../../hooks/useRouting';
 import { reverseGeocode } from '../../services/geocode';
+import { aggiungiCronologia, setPreferito } from '../../services/savedRoutes';
 import './MapView.css';
 
 const DEFAULT_CENTER = [
@@ -39,12 +40,53 @@ function MapView({ children }) {
   const [destinazione, setDestinazione] = useState(null);
   const [pickMode, setPickMode] = useState(false);
   const [reportPunto, setReportPunto] = useState(null);
+  const [preferitoSalvato, setPreferitoSalvato] = useState(false);
   const { percorsi, selezionato, stato: routeStato, calcola, seleziona, reset } = useRouting();
 
   useEffect(() => {
     const id = setInterval(() => setNotte(isNotte()), 60000);
     return () => clearInterval(id);
   }, []);
+
+  function etichettaPunto(p) {
+    return p.label || `${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}`;
+  }
+
+  function avviaCalcolo() {
+    if (!partenza || !destinazione) return;
+    setPreferitoSalvato(false);
+    aggiungiCronologia({
+      id: String(Date.now()),
+      da: etichettaPunto(partenza),
+      a: etichettaPunto(destinazione),
+      daCoord: { lat: partenza.lat, lng: partenza.lng },
+      aCoord: { lat: destinazione.lat, lng: destinazione.lng },
+      quando: Date.now()
+    });
+    calcola(partenza, destinazione);
+  }
+
+  function salvaPreferito() {
+    if (!partenza || !destinazione || percorsi.length === 0) return;
+    const p = percorsi[selezionato];
+    setPreferito({
+      id: String(Date.now()),
+      da: etichettaPunto(partenza),
+      a: etichettaPunto(destinazione),
+      daCoord: { lat: partenza.lat, lng: partenza.lng },
+      aCoord: { lat: destinazione.lat, lng: destinazione.lng },
+      tipo: p.tipo,
+      distanceM: p.distanceM,
+      safetyLevel: p.safetyLevel,
+      quando: Date.now()
+    });
+    setPreferitoSalvato(true);
+  }
+
+  function chiudiPercorso() {
+    reset();
+    setPreferitoSalvato(false);
+  }
 
   async function scegliPunto(latlng) {
     setPickMode(false);
@@ -84,14 +126,16 @@ function MapView({ children }) {
         onPartenza={setPartenza}
         onDestinazione={setDestinazione}
         pronto={Boolean(partenza && destinazione)}
-        onCalcola={() => calcola(partenza, destinazione)}
+        onCalcola={avviaCalcolo}
         stato={routeStato}
       />
       <RoutePanel
         percorsi={percorsi}
         selezionato={selezionato}
         onSeleziona={seleziona}
-        onChiudi={reset}
+        onSalva={salvaPreferito}
+        salvato={preferitoSalvato}
+        onChiudi={chiudiPercorso}
       />
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />

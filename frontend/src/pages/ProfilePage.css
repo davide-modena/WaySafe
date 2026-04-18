@@ -6,16 +6,89 @@
   background: #f4f6f8;
 }
 
+.profile-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 460px;
+}
+
 .profile-card {
   display: flex;
   flex-direction: column;
   gap: 14px;
   width: 100%;
-  max-width: 460px;
   background: #ffffff;
   border-radius: 12px;
   padding: 28px;
   box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+}
+
+.profile-sezione {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2933;
+}
+
+.percorso-blocco h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.percorso-vuoto {
+  margin: 0;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.percorso-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.percorso-voce {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.percorso-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.percorso-info strong {
+  font-size: 13px;
+  color: #1f2933;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.percorso-info span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.percorso-rimuovi {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: #e02424;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .profile-card h1 {

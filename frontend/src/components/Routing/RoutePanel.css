@@ -25,6 +25,25 @@
   color: #6b7280;
 }
 
+.route-panel-salva {
+  position: absolute;
+  top: 12px;
+  right: 44px;
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1d9e75;
+  cursor: pointer;
+}
+
+.route-panel-salva:disabled {
+  color: #9ca3af;
+  cursor: default;
+}
+
 .route-tabs {
   display: flex;
   gap: 10px;

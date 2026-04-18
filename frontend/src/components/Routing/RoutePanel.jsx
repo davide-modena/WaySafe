@@ -43,7 +43,7 @@ function istruzione(t) {
   return `${base}${dir}${strada}`;
 }
 
-function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi }) {
+function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi, onSalva, salvato }) {
   if (!percorsi || percorsi.length === 0) return null;
   const attivo = percorsi[selezionato];
 
@@ -51,6 +51,9 @@ function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi }) {
     <div className="route-panel">
       <button type="button" className="route-panel-close" onClick={onChiudi} aria-label="Chiudi">
         ×
+      </button>
+      <button type="button" className="route-panel-salva" onClick={onSalva} disabled={salvato}>
+        {salvato ? '★ Preferito' : '☆ Salva'}
       </button>
 
       <div className="route-tabs">

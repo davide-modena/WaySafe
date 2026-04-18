@@ -1,6 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import {
+  getCronologia,
+  rimuoviCronologia,
+  getPreferito,
+  rimuoviPreferito
+} from '../services/savedRoutes';
 import './ProfilePage.css';
 
 const formIniziale = {
@@ -18,6 +24,18 @@ function ProfilePage() {
   const [caricato, setCaricato] = useState(false);
   const [messaggio, setMessaggio] = useState('');
   const [errore, setErrore] = useState('');
+  const [preferito, setPreferito] = useState(getPreferito());
+  const [cronologia, setCronologia] = useState(getCronologia());
+
+  function eliminaPreferito() {
+    rimuoviPreferito();
+    setPreferito(null);
+  }
+
+  function eliminaCronologia(id) {
+    rimuoviCronologia(id);
+    setCronologia(getCronologia());
+  }
 
   useEffect(() => {
     api
@@ -55,6 +73,7 @@ function ProfilePage() {
 
   return (
     <div className="profile-page">
+      <div className="profile-stack">
       <form className="profile-card" onSubmit={onSubmit}>
         <h1>Il mio profilo</h1>
         {messaggio && <p className="profile-ok">{messaggio}</p>}
@@ -102,6 +121,56 @@ function ProfilePage() {
           Salva modifiche
         </button>
       </form>
+
+      <section className="profile-card">
+        <h2 className="profile-sezione">I miei percorsi</h2>
+
+        <div className="percorso-blocco">
+          <h3>Percorso preferito</h3>
+          {preferito ? (
+            <div className="percorso-voce">
+              <div className="percorso-info">
+                <strong>{preferito.da} → {preferito.a}</strong>
+                <span>
+                  {preferito.tipo === 'safest' ? 'Più sicuro' : 'Bilanciato'} ·{' '}
+                  {(preferito.distanceM / 1000).toFixed(1)} km
+                </span>
+              </div>
+              <button type="button" className="percorso-rimuovi" onClick={eliminaPreferito}>
+                Rimuovi
+              </button>
+            </div>
+          ) : (
+            <p className="percorso-vuoto">Nessun percorso preferito salvato.</p>
+          )}
+        </div>
+
+        <div className="percorso-blocco">
+          <h3>Cronologia</h3>
+          {cronologia.length === 0 ? (
+            <p className="percorso-vuoto">Nessun percorso recente.</p>
+          ) : (
+            <ul className="percorso-lista">
+              {cronologia.map((v) => (
+                <li key={v.id} className="percorso-voce">
+                  <div className="percorso-info">
+                    <strong>{v.da} → {v.a}</strong>
+                    <span>{new Date(v.quando).toLocaleDateString('it-IT')}</span>
+                  </div>
+                  <button
+                    type="button"
+                    className="percorso-rimuovi"
+                    onClick={() => eliminaCronologia(v.id)}
+                  >
+                    Rimuovi
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </section>
+      </div>
     </div>
   );
 }
