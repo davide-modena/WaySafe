@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { Marker, useMap } from 'react-leaflet';
 import L from 'leaflet';
 
-function puntoIcon(colore) {
+function pinIcon(colore, lettera) {
   return L.divIcon({
     className: 'route-point',
-    html: `<span style="display:block;width:18px;height:18px;border-radius:50%;background:${colore};border:3px solid #fff;box-shadow:0 0 0 1px rgba(0,0,0,0.35)"></span>`,
-    iconSize: [24, 24],
-    iconAnchor: [12, 12]
+    html: `<span style="position:relative;display:flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50% 50% 50% 0;transform:rotate(-45deg);background:${colore};border:2px solid #fff;box-shadow:0 2px 5px rgba(0,0,0,0.4)"><b style="transform:rotate(45deg);color:#fff;font-size:12px;font-weight:700">${lettera}</b></span>`,
+    iconSize: [30, 30],
+    iconAnchor: [15, 28]
   });
 }
 
@@ -32,8 +32,8 @@ function RoutePoints({ partenza, destinazione }) {
 
   return (
     <>
-      {partenza && <Marker position={[partenza.lat, partenza.lng]} icon={puntoIcon('#1d9e75')} />}
-      {destinazione && <Marker position={[destinazione.lat, destinazione.lng]} icon={puntoIcon('#e02424')} />}
+      {partenza && <Marker position={[partenza.lat, partenza.lng]} icon={pinIcon('#1d9e75', 'A')} />}
+      {destinazione && <Marker position={[destinazione.lat, destinazione.lng]} icon={pinIcon('#e02424', 'B')} />}
     </>
   );
 }
