@@ -15,3 +15,13 @@
     height: 100vh;
   }
 }
+
+.user-loc-dot {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #1a73e8;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.4), 0 1px 4px rgba(0, 0, 0, 0.4);
+}

@@ -1,11 +1,46 @@
 import AddressInput from './AddressInput';
 import './RoutePlanner.css';
 
-function RoutePlanner({ onPartenza, onDestinazione, pronto, onCalcola, stato }) {
+function RoutePlanner({
+  partenza,
+  destinazione,
+  onPartenza,
+  onDestinazione,
+  onSwap,
+  onMiaPosizione,
+  pronto,
+  onCalcola,
+  stato
+}) {
   return (
     <div className="route-planner">
-      <AddressInput placeholder="Partenza" onSelect={onPartenza} />
-      <AddressInput placeholder="Destinazione" onSelect={onDestinazione} />
+      <div className="route-row">
+        <AddressInput
+          placeholder="Partenza"
+          valore={partenza ? partenza.label : ''}
+          onSelect={onPartenza}
+        />
+        <button
+          type="button"
+          className="route-mypos"
+          onClick={onMiaPosizione}
+          title="Usa la mia posizione"
+          aria-label="Usa la mia posizione"
+        >
+          ◎
+        </button>
+      </div>
+
+      <button type="button" className="route-swap" onClick={onSwap} aria-label="Inverti partenza e destinazione">
+        ⇅
+      </button>
+
+      <AddressInput
+        placeholder="Destinazione"
+        valore={destinazione ? destinazione.label : ''}
+        onSelect={onDestinazione}
+      />
+
       <button
         type="button"
         className="route-calcola"

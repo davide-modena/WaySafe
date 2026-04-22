@@ -34,7 +34,10 @@ function estraiTappe(route) {
       manovra: s.maneuver.type,
       direzione: s.maneuver.modifier || null,
       strada: s.name || null,
-      distanceM: Math.round(s.distance)
+      distanceM: Math.round(s.distance),
+      location: s.maneuver.location
+        ? { lat: s.maneuver.location[1], lng: s.maneuver.location[0] }
+        : null
     }));
 }
 

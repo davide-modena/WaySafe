@@ -8,10 +8,12 @@ import ZoneClickHandler from './ZoneClickHandler';
 import ZoneDetailPanel from './ZoneDetailPanel';
 import ReportPickHandler from './ReportPickHandler';
 import RouteDisplay from './RouteDisplay';
+import UserLocation from './UserLocation';
 import EmergencyButton from '../Emergency/EmergencyButton';
 import ReportControl from '../Reports/ReportControl';
 import RoutePlanner from '../Routing/RoutePlanner';
 import RoutePanel from '../Routing/RoutePanel';
+import NavigationBar from '../Routing/NavigationBar';
 import useRouting from '../../hooks/useRouting';
 import { reverseGeocode } from '../../services/geocode';
 import { aggiungiCronologia, setPreferito } from '../../services/savedRoutes';
@@ -41,6 +43,8 @@ function MapView({ children }) {
   const [pickMode, setPickMode] = useState(false);
   const [reportPunto, setReportPunto] = useState(null);
   const [preferitoSalvato, setPreferitoSalvato] = useState(false);
+  const [navigazione, setNavigazione] = useState(false);
+  const [userPos, setUserPos] = useState(null);
   const { percorsi, selezionato, stato: routeStato, calcola, seleziona, reset } = useRouting();
 
   useEffect(() => {
@@ -86,6 +90,32 @@ function MapView({ children }) {
   function chiudiPercorso() {
     reset();
     setPreferitoSalvato(false);
+    setNavigazione(false);
+    setPartenza(null);
+    setDestinazione(null);
+  }
+
+  function avviaNavigazione(idx) {
+    seleziona(idx);
+    setNavigazione(true);
+  }
+
+  function terminaNavigazione() {
+    chiudiPercorso();
+  }
+
+  function usaMiaPosizione() {
+    if (!navigator.geolocation) return;
+    navigator.geolocation.getCurrentPosition(
+      (p) => setPartenza({ label: 'La mia posizione', lat: p.coords.latitude, lng: p.coords.longitude }),
+      () => {},
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
+  }
+
+  function invertiPunti() {
+    setPartenza(destinazione);
+    setDestinazione(partenza);
   }
 
   async function scegliPunto(latlng) {
@@ -113,8 +143,14 @@ function MapView({ children }) {
         <ReportMarkers />
         <RoutePoints partenza={partenza} destinazione={destinazione} />
         {percorsi.length > 0 && (
-          <RouteDisplay percorsi={percorsi} selezionato={selezionato} onSeleziona={seleziona} />
+          <RouteDisplay
+            percorsi={percorsi}
+            selezionato={selezionato}
+            onSeleziona={seleziona}
+            soloSelezionato={navigazione}
+          />
         )}
+        {navigazione && <UserLocation onPosizione={setUserPos} segui />}
         {pickMode ? (
           <ReportPickHandler onPick={scegliPunto} />
         ) : (
@@ -122,21 +158,37 @@ function MapView({ children }) {
         )}
         {children}
       </MapContainer>
-      <RoutePlanner
-        onPartenza={setPartenza}
-        onDestinazione={setDestinazione}
-        pronto={Boolean(partenza && destinazione)}
-        onCalcola={avviaCalcolo}
-        stato={routeStato}
-      />
-      <RoutePanel
-        percorsi={percorsi}
-        selezionato={selezionato}
-        onSeleziona={seleziona}
-        onSalva={salvaPreferito}
-        salvato={preferitoSalvato}
-        onChiudi={chiudiPercorso}
-      />
+      {!navigazione && (
+        <RoutePlanner
+          partenza={partenza}
+          destinazione={destinazione}
+          onPartenza={setPartenza}
+          onDestinazione={setDestinazione}
+          onSwap={invertiPunti}
+          onMiaPosizione={usaMiaPosizione}
+          pronto={Boolean(partenza && destinazione)}
+          onCalcola={avviaCalcolo}
+          stato={routeStato}
+        />
+      )}
+      {!navigazione && (
+        <RoutePanel
+          percorsi={percorsi}
+          selezionato={selezionato}
+          onSeleziona={seleziona}
+          onSalva={salvaPreferito}
+          salvato={preferitoSalvato}
+          onChiudi={chiudiPercorso}
+          onAvvia={avviaNavigazione}
+        />
+      )}
+      {navigazione && percorsi[selezionato] && (
+        <NavigationBar
+          tappe={percorsi[selezionato].tappe}
+          userPos={userPos}
+          onTermina={terminaNavigazione}
+        />
+      )}
       <HeatmapLegend />
       <ZoneDetailPanel zona={zona} onClose={() => setZona(null)} />
       <ReportControl
