@@ -16,6 +16,28 @@
   }
 }
 
+.routing-sidebar {
+  display: contents;
+}
+
+@media (min-width: 640px) {
+  .routing-sidebar {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 340px;
+    z-index: 1000;
+    overflow-y: auto;
+    background: #f8f9fa;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.12);
+    padding: 16px 12px;
+    gap: 12px;
+  }
+}
+
 .user-loc-dot {
   display: block;
   width: 16px;

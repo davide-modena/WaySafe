@@ -111,3 +111,16 @@
   font-size: 12px;
   color: #6b7280;
 }
+
+@media (min-width: 640px) {
+  .route-planner {
+    position: relative;
+    top: auto;
+    left: auto;
+    right: auto;
+    max-width: none;
+    margin: 0;
+    box-shadow: none;
+    border-radius: 12px;
+  }
+}

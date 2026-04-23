@@ -159,28 +159,28 @@ function MapView({ children }) {
         {children}
       </MapContainer>
       {!navigazione && (
-        <RoutePlanner
-          partenza={partenza}
-          destinazione={destinazione}
-          onPartenza={setPartenza}
-          onDestinazione={setDestinazione}
-          onSwap={invertiPunti}
-          onMiaPosizione={usaMiaPosizione}
-          pronto={Boolean(partenza && destinazione)}
-          onCalcola={avviaCalcolo}
-          stato={routeStato}
-        />
-      )}
-      {!navigazione && (
-        <RoutePanel
-          percorsi={percorsi}
-          selezionato={selezionato}
-          onSeleziona={seleziona}
-          onSalva={salvaPreferito}
-          salvato={preferitoSalvato}
-          onChiudi={chiudiPercorso}
-          onAvvia={avviaNavigazione}
-        />
+        <div className="routing-sidebar">
+          <RoutePlanner
+            partenza={partenza}
+            destinazione={destinazione}
+            onPartenza={setPartenza}
+            onDestinazione={setDestinazione}
+            onSwap={invertiPunti}
+            onMiaPosizione={usaMiaPosizione}
+            pronto={Boolean(partenza && destinazione)}
+            onCalcola={avviaCalcolo}
+            stato={routeStato}
+          />
+          <RoutePanel
+            percorsi={percorsi}
+            selezionato={selezionato}
+            onSeleziona={seleziona}
+            onSalva={salvaPreferito}
+            salvato={preferitoSalvato}
+            onChiudi={chiudiPercorso}
+            onAvvia={avviaNavigazione}
+          />
+        </div>
       )}
       {navigazione && percorsi[selezionato] && (
         <NavigationBar

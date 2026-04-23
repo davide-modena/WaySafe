@@ -13,9 +13,13 @@ function RouteDisplay({ percorsi, selezionato, onSeleziona, soloSelezionato }) {
 
   useEffect(() => {
     const attivo = percorsi[selezionato];
-    if (attivo) {
-      map.fitBounds(toLatLng(attivo.geometry), { padding: [60, 60] });
-    }
+    if (!attivo) return;
+    const coords = toLatLng(attivo.geometry);
+    const desktop = window.innerWidth >= 640;
+    const opts = desktop
+      ? { paddingTopLeft: [360, 60], paddingBottomRight: [60, 60] }
+      : { paddingTopLeft: [40, 190], paddingBottomRight: [40, 220] };
+    map.fitBounds(coords, opts);
   }, [map, percorsi, selezionato]);
 
   const elementi = [];
