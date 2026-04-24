@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../../services/api';
+import { useAuth } from '../../context/AuthContext';
 import { categoriaLabel } from '../Map/reportCategories';
 import { reverseGeocode } from '../../services/geocode';
 import './ReportControl.css';
@@ -7,6 +8,7 @@ import './ReportControl.css';
 const categorie = ['scarsa_illuminazione', 'comportamenti_sospetti', 'strade_danneggiate', 'altro'];
 
 function ReportControl({ punto, pickMode, onAvviaPick, onAnnullaPick, onSetPunto, onReset }) {
+  const { isAuthenticated } = useAuth();
   const [aperto, setAperto] = useState(false);
   const [categoria, setCategoria] = useState('scarsa_illuminazione');
   const [descrizione, setDescrizione] = useState('');
@@ -45,6 +47,10 @@ function ReportControl({ punto, pickMode, onAvviaPick, onAnnullaPick, onSetPunto
 
   async function invia(e) {
     e.preventDefault();
+    if (!isAuthenticated) {
+      setErrore('Devi essere autenticato per inviare una segnalazione');
+      return;
+    }
     if (!punto) {
       setErrore('Scegli prima una posizione');
       return;
