@@ -19,9 +19,6 @@ function Navbar() {
       <nav className="navbar-links">
         {isAuthenticated ? (
           <>
-            {user && (user.ruolo === 'operatore' || user.ruolo === 'admin') && (
-              <Link to="/operatore">Operatore</Link>
-            )}
             <Link to="/profile" className="navbar-user">
               {user ? user.nome : 'Profilo'}
             </Link>

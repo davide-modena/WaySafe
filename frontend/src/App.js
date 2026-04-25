@@ -6,7 +6,6 @@ import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ProfilePage from './pages/ProfilePage';
-import DashboardOperatore from './pages/DashboardOperatore';
 import './App.css';
 
 function App() {
@@ -25,14 +24,6 @@ function App() {
                 element={
                   <PrivateRoute>
                     <ProfilePage />
-                  </PrivateRoute>
-                }
-              />
-              <Route
-                path="/operatore"
-                element={
-                  <PrivateRoute ruoli={['operatore', 'admin']}>
-                    <DashboardOperatore />
                   </PrivateRoute>
                 }
               />
