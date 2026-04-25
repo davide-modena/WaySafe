@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import NotificationCenter from '../Notifications/NotificationCenter';
 import './Navbar.css';
 
 function Navbar() {
@@ -19,6 +20,7 @@ function Navbar() {
       <nav className="navbar-links">
         {isAuthenticated ? (
           <>
+            <NotificationCenter />
             <Link to="/profile" className="navbar-user">
               {user ? user.nome : 'Profilo'}
             </Link>
