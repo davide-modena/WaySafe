@@ -51,13 +51,7 @@ function ReportMarkers() {
         <Popup>
           <strong>{categoriaLabel[r.categoria] || r.categoria}</strong>
           <br />
-          {r.descrizione ? (
-            <>
-              {r.descrizione}
-              <br />
-            </>
-          ) : null}
-          Stato: {r.stato}
+          {r.descrizione || null}
         </Popup>
       </Marker>
     );
