@@ -1,7 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
+import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import HeatmapLayer from '../components/Map/HeatmapLayer';
+import ReportMarkers from '../components/Map/ReportMarkers';
+import EmergencyButton from '../components/Emergency/EmergencyButton';
 import api from '../services/api';
 import { categoriaLabel, categoriaColore } from '../components/Map/reportCategories';
 import './DashboardOperatore.css';
+
+const DEFAULT_CENTER = [
+  Number(process.env.REACT_APP_DEFAULT_LAT) || 46.0667,
+  Number(process.env.REACT_APP_DEFAULT_LNG) || 11.1217
+];
+const DEFAULT_ZOOM = Number(process.env.REACT_APP_DEFAULT_ZOOM) || 14;
+
+const TILE_ATTR =
+  '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>';
+const TILE_URL = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
+
+const STATI_TAB = [
+  { value: 'in_attesa', label: 'In attesa' },
+  { value: 'approvata', label: 'Approvate' },
+  { value: 'rifiutata', label: 'Rifiutate' },
+];
 
 function formatData(d) {
   return new Date(d).toLocaleString('it-IT', {
@@ -12,96 +32,151 @@ function formatData(d) {
   });
 }
 
+function CentraMap({ coord }) {
+  const map = useMap();
+  useEffect(() => {
+    if (coord) map.panTo([coord.lat, coord.lng], { animate: true });
+  }, [map, coord]);
+  return null;
+}
+
 function DashboardOperatore() {
   const [reports, setReports] = useState([]);
-  const [stato, setStato] = useState('loading');
+  const [caricamento, setCaricamento] = useState(true);
+  const [errore, setErrore] = useState(false);
   const [inCorso, setInCorso] = useState(null);
+  const [centro, setCentro] = useState(null);
+  const [filtro, setFiltro] = useState('in_attesa');
 
-  useEffect(() => {
+  const carica = useCallback((stato) => {
+    setCaricamento(true);
+    setErrore(false);
     api
-      .get('/operator/reports', { params: { stato: 'in_attesa' } })
+      .get('/operator/reports', { params: { stato } })
       .then((res) => {
         setReports(res.data);
-        setStato('ok');
+        setCaricamento(false);
       })
-      .catch(() => setStato('error'));
+      .catch(() => {
+        setErrore(true);
+        setCaricamento(false);
+      });
   }, []);
+
+  useEffect(() => {
+    carica(filtro);
+  }, [filtro, carica]);
 
   async function aggiorna(id, nuovoStato) {
     setInCorso(id);
     try {
       await api.patch(`/reports/${id}`, { stato: nuovoStato });
       setReports((prev) => prev.filter((r) => r._id !== id));
-    } catch {
-      setInCorso(null);
-    }
+    } catch {}
+    setInCorso(null);
   }
 
   return (
-    <div className="operatore-page">
-      <div className="operatore-header">
-        <h1>Segnalazioni in attesa</h1>
-        <span className="operatore-conteggio">{reports.length}</span>
+    <div className="op-shell">
+      <aside className="op-sidebar">
+        <div className="op-sidebar-top">
+          <div className="op-sidebar-header">
+            <h2>Segnalazioni</h2>
+            <span className="op-count">{reports.length}</span>
+          </div>
+          <div className="op-tabs">
+            {STATI_TAB.map((t) => (
+              <button
+                key={t.value}
+                type="button"
+                className={filtro === t.value ? 'op-tab attiva' : 'op-tab'}
+                onClick={() => setFiltro(t.value)}
+              >
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="op-lista-wrap">
+          {caricamento && <p className="op-info">Caricamento…</p>}
+          {errore && <p className="op-error">Impossibile caricare le segnalazioni.</p>}
+          {!caricamento && !errore && reports.length === 0 && (
+            <p className="op-info">Nessuna segnalazione.</p>
+          )}
+          <ul className="op-lista">
+            {reports.map((r) => {
+              const [lng, lat] = r.posizione.coordinates;
+              return (
+                <li
+                  key={r._id}
+                  className="op-card"
+                  onClick={() => setCentro({ lat, lng })}
+                >
+                  <div className="op-card-top">
+                    <span
+                      className="op-cat"
+                      style={{ background: categoriaColore[r.categoria] || categoriaColore.altro }}
+                    >
+                      {categoriaLabel[r.categoria] || r.categoria}
+                    </span>
+                    <span className="op-data">{formatData(r.createdAt)}</span>
+                  </div>
+                  {r.descrizione && <p className="op-desc">{r.descrizione}</p>}
+                  <p className="op-meta">
+                    {r.userId ? `${r.userId.nome} ${r.userId.cognome}` : 'Utente'} ·{' '}
+                    {lat.toFixed(4)}, {lng.toFixed(4)}
+                  </p>
+                  {filtro === 'in_attesa' && (
+                    <div className="op-azioni">
+                      <button
+                        type="button"
+                        className="azione approva"
+                        disabled={inCorso === r._id}
+                        onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'approvata'); }}
+                      >
+                        Approva
+                      </button>
+                      <button
+                        type="button"
+                        className="azione rifiuta"
+                        disabled={inCorso === r._id}
+                        onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'rifiutata'); }}
+                      >
+                        Rifiuta
+                      </button>
+                      <button
+                        type="button"
+                        className="azione archivia"
+                        disabled={inCorso === r._id}
+                        onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'archiviata'); }}
+                      >
+                        Archivia
+                      </button>
+                    </div>
+                  )}
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </aside>
+
+      <div className="op-mappa">
+        <MapContainer
+          className="op-map-view"
+          center={DEFAULT_CENTER}
+          zoom={DEFAULT_ZOOM}
+          scrollWheelZoom
+        >
+          <TileLayer attribution={TILE_ATTR} url={TILE_URL} />
+          <HeatmapLayer />
+          <ReportMarkers />
+          {centro && <CentraMap coord={centro} />}
+        </MapContainer>
       </div>
 
-      {stato === 'loading' && <p className="operatore-info">Caricamento…</p>}
-      {stato === 'error' && <p className="operatore-error">Impossibile caricare le segnalazioni.</p>}
-      {stato === 'ok' && reports.length === 0 && (
-        <p className="operatore-info">Nessuna segnalazione da validare.</p>
-      )}
-
-      <ul className="operatore-lista">
-        {reports.map((r) => {
-          const [lng, lat] = r.posizione.coordinates;
-          return (
-            <li key={r._id} className="operatore-card">
-              <div className="operatore-card-top">
-                <span
-                  className="operatore-categoria"
-                  style={{ background: categoriaColore[r.categoria] || categoriaColore.altro }}
-                >
-                  {categoriaLabel[r.categoria] || r.categoria}
-                </span>
-                <span className="operatore-data">{formatData(r.createdAt)}</span>
-              </div>
-
-              {r.descrizione && <p className="operatore-descrizione">{r.descrizione}</p>}
-
-              <p className="operatore-meta">
-                {r.userId ? `${r.userId.nome} ${r.userId.cognome}` : 'Utente'} ·{' '}
-                {lat.toFixed(5)}, {lng.toFixed(5)}
-              </p>
-
-              <div className="operatore-azioni">
-                <button
-                  type="button"
-                  className="azione approva"
-                  disabled={inCorso === r._id}
-                  onClick={() => aggiorna(r._id, 'approvata')}
-                >
-                  Approva
-                </button>
-                <button
-                  type="button"
-                  className="azione rifiuta"
-                  disabled={inCorso === r._id}
-                  onClick={() => aggiorna(r._id, 'rifiutata')}
-                >
-                  Rifiuta
-                </button>
-                <button
-                  type="button"
-                  className="azione archivia"
-                  disabled={inCorso === r._id}
-                  onClick={() => aggiorna(r._id, 'archiviata')}
-                >
-                  Archivia
-                </button>
-              </div>
-            </li>
-          );
-        })}
-      </ul>
+      <EmergencyButton />
     </div>
   );
 }
