@@ -1,7 +1,15 @@
 const Report = require('../models/Report');
 const { invalidaCache } = require('../services/heatmap.service');
+const { creaNotifica } = require('./notifications.controller');
 
 const statiValidi = ['in_attesa', 'approvata', 'rifiutata', 'risolta', 'archiviata'];
+
+const messaggioStato = {
+  approvata: 'La tua segnalazione è stata approvata ed è ora visibile sulla mappa.',
+  rifiutata: 'La tua segnalazione è stata rifiutata dopo la verifica.',
+  risolta: 'La situazione che hai segnalato è stata risolta.',
+  archiviata: 'La tua segnalazione è stata archiviata.'
+};
 
 async function createReport(req, res) {
   const { categoria, lat, lng, descrizione } = req.body;
@@ -82,6 +90,17 @@ async function updateReportStato(req, res) {
       return res.status(404).json({ error: 'Segnalazione non trovata' });
     }
     invalidaCache();
+
+    if (messaggioStato[stato] && report.userId) {
+      await creaNotifica({
+        userId: report.userId,
+        tipo: 'segnalazione',
+        titolo: 'Aggiornamento segnalazione',
+        messaggio: messaggioStato[stato],
+        reportId: report._id
+      });
+    }
+
     res.json(report);
   } catch (err) {
     res.status(500).json({ error: 'Errore durante l\'aggiornamento della segnalazione' });

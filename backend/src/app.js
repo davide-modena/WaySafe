@@ -11,6 +11,7 @@ const operatorRoutes = require('./routes/operator.routes');
 const statsRoutes = require('./routes/stats.routes');
 const emergencyRoutes = require('./routes/emergency.routes');
 const usersRoutes = require('./routes/users.routes');
+const notificationsRoutes = require('./routes/notifications.routes');
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use('/api/v1/operator', operatorRoutes);
 app.use('/api/v1/stats', statsRoutes);
 app.use('/api/v1/emergency', emergencyRoutes);
 app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/notifications', notificationsRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ error: 'Risorsa non trovata' });
