@@ -178,11 +178,13 @@ function MapView({ children }) {
         {children}
       </MapContainer>
       {!navigazione && modo === 'cerca' && (
-        <SearchBar
-          valore={luogoCercato ? luogoCercato.label : ''}
-          onCerca={cercaLuogo}
-          onPianifica={apriPianifica}
-        />
+        <div className="routing-sidebar">
+          <SearchBar
+            valore={luogoCercato ? luogoCercato.label : ''}
+            onCerca={cercaLuogo}
+            onPianifica={apriPianifica}
+          />
+        </div>
       )}
       {!navigazione && modo === 'pianifica' && (
         <div className="routing-sidebar">
