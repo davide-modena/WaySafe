@@ -9,10 +9,12 @@ import ZoneDetailPanel from './ZoneDetailPanel';
 import ReportPickHandler from './ReportPickHandler';
 import RouteDisplay from './RouteDisplay';
 import UserLocation from './UserLocation';
+import SearchedPlace from './SearchedPlace';
 import EmergencyButton from '../Emergency/EmergencyButton';
 import ReportControl from '../Reports/ReportControl';
 import RoutePlanner from '../Routing/RoutePlanner';
 import RoutePanel from '../Routing/RoutePanel';
+import SearchBar from '../Routing/SearchBar';
 import NavigationBar from '../Routing/NavigationBar';
 import useRouting from '../../hooks/useRouting';
 import { reverseGeocode } from '../../services/geocode';
@@ -45,6 +47,8 @@ function MapView({ children }) {
   const [preferitoSalvato, setPreferitoSalvato] = useState(false);
   const [navigazione, setNavigazione] = useState(false);
   const [userPos, setUserPos] = useState(null);
+  const [modo, setModo] = useState('cerca');
+  const [luogoCercato, setLuogoCercato] = useState(null);
   const { percorsi, selezionato, stato: routeStato, calcola, seleziona, reset } = useRouting();
 
   useEffect(() => {
@@ -93,6 +97,20 @@ function MapView({ children }) {
     setNavigazione(false);
     setPartenza(null);
     setDestinazione(null);
+  }
+
+  function cercaLuogo(luogo) {
+    setLuogoCercato(luogo);
+  }
+
+  function apriPianifica() {
+    if (luogoCercato) setDestinazione(luogoCercato);
+    setModo('pianifica');
+  }
+
+  function tornaCerca() {
+    chiudiPercorso();
+    setModo('cerca');
   }
 
   function avviaNavigazione(idx) {
@@ -151,6 +169,7 @@ function MapView({ children }) {
           />
         )}
         {navigazione && <UserLocation onPosizione={setUserPos} segui />}
+        {modo === 'cerca' && !navigazione && <SearchedPlace luogo={luogoCercato} />}
         {pickMode ? (
           <ReportPickHandler onPick={scegliPunto} />
         ) : (
@@ -158,8 +177,18 @@ function MapView({ children }) {
         )}
         {children}
       </MapContainer>
-      {!navigazione && (
+      {!navigazione && modo === 'cerca' && (
+        <SearchBar
+          valore={luogoCercato ? luogoCercato.label : ''}
+          onCerca={cercaLuogo}
+          onPianifica={apriPianifica}
+        />
+      )}
+      {!navigazione && modo === 'pianifica' && (
         <div className="routing-sidebar">
+          <button type="button" className="routing-back" onClick={tornaCerca}>
+            ← Cerca un luogo
+          </button>
           <RoutePlanner
             partenza={partenza}
             destinazione={destinazione}
