@@ -36,7 +36,7 @@ function LoginPage() {
     <div className="auth-page">
       <form className="auth-card" onSubmit={onSubmit}>
         <h1>Accedi</h1>
-        {errore && <p className="auth-error">{errore}</p>}
+        {errore && <p className="auth-error" role="alert">{errore}</p>}
         <label>
           Email
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />

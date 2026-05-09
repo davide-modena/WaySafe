@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import './EmergencyButton.css';
 
@@ -66,6 +66,15 @@ function EmergencyButton() {
     setIndirizzo(null);
   }
 
+  useEffect(() => {
+    if (!aperto) return undefined;
+    function onKey(e) {
+      if (e.key === 'Escape') chiudi();
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [aperto]);
+
   return (
     <>
       <button type="button" className="emergency-fab" onClick={attiva} aria-label="Emergenza">
@@ -74,15 +83,21 @@ function EmergencyButton() {
 
       {aperto && (
         <div className="emergency-overlay" onClick={chiudi}>
-          <div className="emergency-modal" onClick={(e) => e.stopPropagation()}>
+          <div
+            className="emergency-modal"
+            onClick={(e) => e.stopPropagation()}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="emergency-titolo"
+          >
             <button type="button" className="emergency-close" onClick={chiudi} aria-label="Chiudi">
               ×
             </button>
-            <h2>Emergenza</h2>
+            <h2 id="emergency-titolo">Emergenza</h2>
 
-            {stato === 'loading' && <p>Rilevamento posizione in corso…</p>}
+            {stato === 'loading' && <p aria-live="polite">Rilevamento posizione in corso…</p>}
             {stato === 'error' && (
-              <p className="emergency-error">Servizio non raggiungibile. Chiama comunque il 112.</p>
+              <p className="emergency-error" role="alert">Servizio non raggiungibile. Chiama comunque il 112.</p>
             )}
             {stato === 'ok' && dati && (
               <>

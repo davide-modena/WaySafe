@@ -68,10 +68,13 @@ function NotificationCenter() {
         type="button"
         className="notif-bell"
         onClick={() => setAperto((v) => !v)}
-        aria-label="Notifiche"
+        aria-label={nonLette > 0 ? `Notifiche, ${nonLette} non lette` : 'Notifiche'}
+        aria-expanded={aperto}
       >
-        🔔
-        {nonLette > 0 && <span className="notif-badge">{nonLette > 9 ? '9+' : nonLette}</span>}
+        <span aria-hidden="true">🔔</span>
+        {nonLette > 0 && (
+          <span className="notif-badge" aria-hidden="true">{nonLette > 9 ? '9+' : nonLette}</span>
+        )}
       </button>
 
       {aperto && (

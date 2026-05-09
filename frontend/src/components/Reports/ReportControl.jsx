@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import api from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { categoriaLabel } from '../Map/reportCategories';
@@ -27,6 +27,15 @@ function ReportControl({ punto, pickMode, onAvviaPick, onAnnullaPick, onSetPunto
     setCategoria('scarsa_illuminazione');
     onReset();
   }
+
+  useEffect(() => {
+    if (!aperto) return undefined;
+    function onKey(e) {
+      if (e.key === 'Escape') chiudi();
+    }
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [aperto]);
 
   function usaGps() {
     setErrore('');
@@ -88,11 +97,18 @@ function ReportControl({ punto, pickMode, onAvviaPick, onAnnullaPick, onSetPunto
 
       {aperto && !pickMode && (
         <div className="report-overlay" onClick={chiudi}>
-          <form className="report-modal" onClick={(e) => e.stopPropagation()} onSubmit={invia}>
+          <form
+            className="report-modal"
+            onClick={(e) => e.stopPropagation()}
+            onSubmit={invia}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="report-titolo"
+          >
             <button type="button" className="report-close" onClick={chiudi} aria-label="Chiudi">
               ×
             </button>
-            <h2>Nuova segnalazione</h2>
+            <h2 id="report-titolo">Nuova segnalazione</h2>
 
             {stato === 'ok' ? (
               <>
@@ -141,7 +157,7 @@ function ReportControl({ punto, pickMode, onAvviaPick, onAnnullaPick, onSetPunto
                   />
                 </label>
 
-                {errore && <p className="report-error">{errore}</p>}
+                {errore && <p className="report-error" role="alert">{errore}</p>}
 
                 <button type="submit" className="report-submit" disabled={stato === 'loading'}>
                   {stato === 'loading' ? 'Invio…' : 'Invia segnalazione'}
