@@ -19,6 +19,138 @@
     "errore": "Unable to calculate the route. Try again.",
     "tornaCerca": "Search a place"
   },
+  "route": {
+    "piuSicuro": "Safest",
+    "bilanciato": "Balanced",
+    "avvia": "Start",
+    "mostraIndicazioni": "Show directions ({{count}})",
+    "nascondiIndicazioni": "Hide directions",
+    "salva": "Save",
+    "preferito": "Favourite",
+    "chiudi": "Close",
+    "su": "onto {{strada}}",
+    "termina": "End",
+    "tra": "in {{dist}}",
+    "attesaGps": "Waiting for GPS…"
+  },
+  "manovra": {
+    "depart": "Depart",
+    "arrive": "Arrive",
+    "turn": "Turn",
+    "continue": "Continue",
+    "new name": "Continue",
+    "merge": "Merge",
+    "fork": "Keep",
+    "end of road": "End of road",
+    "roundabout": "Roundabout",
+    "rotary": "Roundabout",
+    "default": "Continue"
+  },
+  "direzione": {
+    "left": "left",
+    "right": "right",
+    "slight left": "slightly left",
+    "slight right": "slightly right",
+    "sharp left": "hard left",
+    "sharp right": "hard right",
+    "straight": "straight",
+    "uturn": "make a U-turn"
+  },
+  "livello": {
+    "safe": "Safe",
+    "moderate": "Moderate",
+    "risk": "At risk",
+    "danger": "Dangerous"
+  },
+  "categoria": {
+    "scarsa_illuminazione": "Poor lighting",
+    "comportamenti_sospetti": "Suspicious behaviour",
+    "strade_danneggiate": "Damaged roads",
+    "altro": "Other"
+  },
+  "emergency": {
+    "titolo": "Emergency",
+    "rilevamento": "Detecting location…",
+    "errore": "Service unavailable. Call 112 anyway.",
+    "tuaPosizione": "Your location",
+    "indirizzoRicerca": "Looking up address…",
+    "posizioneNonDisp": "Location not available.",
+    "chiudi": "Close"
+  },
+  "segnalazione": {
+    "nuova": "New report",
+    "categoria": "Category",
+    "posizione": "Location",
+    "nessunaPosizione": "No location selected",
+    "usaPosizione": "Use my location",
+    "scegliMappa": "Choose on the map",
+    "descrizione": "Description (optional)",
+    "invia": "Send report",
+    "invio": "Sending…",
+    "inviata": "Report sent. It will be visible after operator review.",
+    "chiudi": "Close",
+    "fab": "New report",
+    "toccaMappa": "Tap the map to pick the point",
+    "annulla": "Cancel",
+    "nonAutenticato": "You must be logged in to send a report",
+    "scegliPosizione": "Choose a location first",
+    "erroreInvio": "Sending failed",
+    "geoNonDisp": "Geolocation not available",
+    "posNonRilevata": "Location not detected"
+  },
+  "notifiche": {
+    "titolo": "Notifications",
+    "tutte": "All",
+    "nonLette": "Unread",
+    "segnaLette": "Mark read",
+    "nessuna": "No notifications",
+    "label": "Notifications",
+    "labelNonLette": "Notifications, {{count}} unread"
+  },
+  "profilo": {
+    "titolo": "My profile",
+    "nome": "First name",
+    "cognome": "Last name",
+    "email": "Email",
+    "percorsoPreferito": "Preferred route",
+    "piuSicuro": "Safest",
+    "bilanciato": "Balanced",
+    "riceviNotifiche": "Receive notifications",
+    "lingua": "Language",
+    "salva": "Save changes",
+    "aggiornato": "Profile updated successfully",
+    "erroreSalvataggio": "Error while saving",
+    "erroreCaricamento": "Unable to load the profile",
+    "mieiPercorsi": "My routes",
+    "nessunPreferito": "No favourite route saved.",
+    "cronologia": "History",
+    "nessunRecente": "No recent routes.",
+    "rimuovi": "Remove"
+  },
+  "operatore": {
+    "segnalazioni": "Reports",
+    "inAttesa": "Pending",
+    "approvate": "Approved",
+    "rifiutate": "Rejected",
+    "caricamento": "Loading…",
+    "erroreCaricamento": "Unable to load reports.",
+    "nessuna": "No reports.",
+    "approva": "Approve",
+    "rifiuta": "Reject",
+    "archivia": "Archive",
+    "utente": "User"
+  },
+  "zona": {
+    "stradaSenzaNome": "Unnamed street",
+    "punteggio": "Safety score",
+    "distanza": "Distance from point",
+    "segnalazioniVicine": "Nearby reports",
+    "ultimoAgg": "Last update: {{data}}",
+    "chiudi": "Close"
+  },
+  "legenda": {
+    "titolo": "Street safety"
+  },
   "login": {
     "titolo": "Log in",
     "email": "Email",

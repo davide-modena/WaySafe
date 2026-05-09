@@ -19,6 +19,138 @@
     "errore": "Route konnte nicht berechnet werden. Erneut versuchen.",
     "tornaCerca": "Ort suchen"
   },
+  "route": {
+    "piuSicuro": "Sicherste",
+    "bilanciato": "Ausgewogen",
+    "avvia": "Starten",
+    "mostraIndicazioni": "Wegbeschreibung anzeigen ({{count}})",
+    "nascondiIndicazioni": "Wegbeschreibung ausblenden",
+    "salva": "Speichern",
+    "preferito": "Favorit",
+    "chiudi": "Schließen",
+    "su": "auf {{strada}}",
+    "termina": "Beenden",
+    "tra": "in {{dist}}",
+    "attesaGps": "Warte auf GPS…"
+  },
+  "manovra": {
+    "depart": "Losfahren",
+    "arrive": "Ankunft",
+    "turn": "Abbiegen",
+    "continue": "Weiter",
+    "new name": "Weiter",
+    "merge": "Einfädeln",
+    "fork": "Halten",
+    "end of road": "Straßenende",
+    "roundabout": "Kreisverkehr",
+    "rotary": "Kreisverkehr",
+    "default": "Weiter"
+  },
+  "direzione": {
+    "left": "links",
+    "right": "rechts",
+    "slight left": "leicht links",
+    "slight right": "leicht rechts",
+    "sharp left": "scharf links",
+    "sharp right": "scharf rechts",
+    "straight": "geradeaus",
+    "uturn": "wenden"
+  },
+  "livello": {
+    "safe": "Sicher",
+    "moderate": "Mäßig",
+    "risk": "Risiko",
+    "danger": "Gefährlich"
+  },
+  "categoria": {
+    "scarsa_illuminazione": "Schlechte Beleuchtung",
+    "comportamenti_sospetti": "Verdächtiges Verhalten",
+    "strade_danneggiate": "Beschädigte Straßen",
+    "altro": "Sonstiges"
+  },
+  "emergency": {
+    "titolo": "Notfall",
+    "rilevamento": "Standort wird ermittelt…",
+    "errore": "Dienst nicht erreichbar. Rufen Sie trotzdem 112 an.",
+    "tuaPosizione": "Ihr Standort",
+    "indirizzoRicerca": "Adresse wird gesucht…",
+    "posizioneNonDisp": "Standort nicht verfügbar.",
+    "chiudi": "Schließen"
+  },
+  "segnalazione": {
+    "nuova": "Neue Meldung",
+    "categoria": "Kategorie",
+    "posizione": "Standort",
+    "nessunaPosizione": "Kein Standort gewählt",
+    "usaPosizione": "Meinen Standort verwenden",
+    "scegliMappa": "Auf der Karte wählen",
+    "descrizione": "Beschreibung (optional)",
+    "invia": "Meldung senden",
+    "invio": "Wird gesendet…",
+    "inviata": "Meldung gesendet. Sie wird nach der Prüfung durch den Betreiber sichtbar.",
+    "chiudi": "Schließen",
+    "fab": "Neue Meldung",
+    "toccaMappa": "Tippen Sie auf die Karte, um den Punkt zu wählen",
+    "annulla": "Abbrechen",
+    "nonAutenticato": "Sie müssen angemeldet sein, um eine Meldung zu senden",
+    "scegliPosizione": "Wählen Sie zuerst einen Standort",
+    "erroreInvio": "Senden fehlgeschlagen",
+    "geoNonDisp": "Standortbestimmung nicht verfügbar",
+    "posNonRilevata": "Standort nicht erkannt"
+  },
+  "notifiche": {
+    "titolo": "Benachrichtigungen",
+    "tutte": "Alle",
+    "nonLette": "Ungelesen",
+    "segnaLette": "Als gelesen markieren",
+    "nessuna": "Keine Benachrichtigungen",
+    "label": "Benachrichtigungen",
+    "labelNonLette": "Benachrichtigungen, {{count}} ungelesen"
+  },
+  "profilo": {
+    "titolo": "Mein Profil",
+    "nome": "Vorname",
+    "cognome": "Nachname",
+    "email": "E-Mail",
+    "percorsoPreferito": "Bevorzugte Route",
+    "piuSicuro": "Sicherste",
+    "bilanciato": "Ausgewogen",
+    "riceviNotifiche": "Benachrichtigungen erhalten",
+    "lingua": "Sprache",
+    "salva": "Änderungen speichern",
+    "aggiornato": "Profil erfolgreich aktualisiert",
+    "erroreSalvataggio": "Fehler beim Speichern",
+    "erroreCaricamento": "Profil konnte nicht geladen werden",
+    "mieiPercorsi": "Meine Routen",
+    "nessunPreferito": "Keine bevorzugte Route gespeichert.",
+    "cronologia": "Verlauf",
+    "nessunRecente": "Keine letzten Routen.",
+    "rimuovi": "Entfernen"
+  },
+  "operatore": {
+    "segnalazioni": "Meldungen",
+    "inAttesa": "Ausstehend",
+    "approvate": "Genehmigt",
+    "rifiutate": "Abgelehnt",
+    "caricamento": "Wird geladen…",
+    "erroreCaricamento": "Meldungen konnten nicht geladen werden.",
+    "nessuna": "Keine Meldungen.",
+    "approva": "Genehmigen",
+    "rifiuta": "Ablehnen",
+    "archivia": "Archivieren",
+    "utente": "Benutzer"
+  },
+  "zona": {
+    "stradaSenzaNome": "Unbenannte Straße",
+    "punteggio": "Sicherheitswert",
+    "distanza": "Entfernung vom Punkt",
+    "segnalazioniVicine": "Meldungen in der Nähe",
+    "ultimoAgg": "Letzte Aktualisierung: {{data}}",
+    "chiudi": "Schließen"
+  },
+  "legenda": {
+    "titolo": "Straßensicherheit"
+  },
   "login": {
     "titolo": "Anmelden",
     "email": "E-Mail",

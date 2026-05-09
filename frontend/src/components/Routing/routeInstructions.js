@@ -1,27 +1,3 @@
-const manovra = {
-  depart: 'Parti',
-  arrive: 'Arrivo',
-  turn: 'Svolta',
-  continue: 'Continua',
-  'new name': 'Prosegui',
-  merge: 'Immettiti',
-  fork: 'Tieni',
-  'end of road': 'Fine strada',
-  roundabout: 'Rotatoria',
-  rotary: 'Rotatoria'
-};
-
-const direzione = {
-  left: 'a sinistra',
-  right: 'a destra',
-  'slight left': 'leggermente a sinistra',
-  'slight right': 'leggermente a destra',
-  'sharp left': 'tutto a sinistra',
-  'sharp right': 'tutto a destra',
-  straight: 'dritto',
-  uturn: 'inverti il senso'
-};
-
 export function formatDistanza(m) {
   return m >= 1000 ? `${(m / 1000).toFixed(1)} km` : `${m} m`;
 }
@@ -30,9 +6,10 @@ export function formatDurata(s) {
   return `${Math.max(1, Math.round(s / 60))} min`;
 }
 
-export function istruzione(t) {
-  const base = manovra[t.manovra] || 'Prosegui';
-  const dir = t.direzione && direzione[t.direzione] ? ` ${direzione[t.direzione]}` : '';
-  const strada = t.strada ? ` su ${t.strada}` : '';
+export function istruzione(tappa, t) {
+  const base = t(`manovra.${tappa.manovra}`, { defaultValue: t('manovra.default') });
+  const dirTesto = tappa.direzione ? t(`direzione.${tappa.direzione}`, { defaultValue: '' }) : '';
+  const dir = dirTesto ? ` ${dirTesto}` : '';
+  const strada = tappa.strada ? ` ${t('route.su', { strada: tappa.strada })}` : '';
   return `${base}${dir}${strada}`;
 }

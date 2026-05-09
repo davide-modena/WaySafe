@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { istruzione, formatDistanza } from './routeInstructions';
 import './NavigationBar.css';
 
@@ -13,6 +14,7 @@ function distanza(aLat, aLng, bLat, bLng) {
 }
 
 function NavigationBar({ tappe, userPos, onTermina }) {
+  const { t } = useTranslation();
   const corrente = useMemo(() => {
     if (!tappe || tappe.length === 0) return null;
     if (!userPos) return { ...tappe[0], _dist: null };
@@ -35,15 +37,15 @@ function NavigationBar({ tappe, userPos, onTermina }) {
   return (
     <div className="nav-bar">
       <div className="nav-istruzione">
-        <strong>{istruzione(corrente)}</strong>
+        <strong>{istruzione(corrente, t)}</strong>
         {corrente._dist != null ? (
-          <span>tra {formatDistanza(Math.round(corrente._dist))}</span>
+          <span>{t('route.tra', { dist: formatDistanza(Math.round(corrente._dist)) })}</span>
         ) : (
-          <span>In attesa del GPS…</span>
+          <span>{t('route.attesaGps')}</span>
         )}
       </div>
       <button type="button" className="nav-termina" onClick={onTermina}>
-        Termina
+        {t('route.termina')}
       </button>
     </div>
   );

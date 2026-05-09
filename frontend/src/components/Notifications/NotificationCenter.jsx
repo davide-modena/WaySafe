@@ -1,17 +1,20 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
 import './NotificationCenter.css';
 
-function formatData(d) {
-  return new Date(d).toLocaleString('it-IT', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-}
-
 function NotificationCenter() {
+  const { t, i18n } = useTranslation();
+
+  function formatData(d) {
+    return new Date(d).toLocaleString(i18n.language, {
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
   const [notifiche, setNotifiche] = useState([]);
   const [nonLette, setNonLette] = useState(0);
   const [aperto, setAperto] = useState(false);
@@ -68,7 +71,7 @@ function NotificationCenter() {
         type="button"
         className="notif-bell"
         onClick={() => setAperto((v) => !v)}
-        aria-label={nonLette > 0 ? `Notifiche, ${nonLette} non lette` : 'Notifiche'}
+        aria-label={nonLette > 0 ? t('notifiche.labelNonLette', { count: nonLette }) : t('notifiche.label')}
         aria-expanded={aperto}
       >
         <span aria-hidden="true">🔔</span>
@@ -80,25 +83,25 @@ function NotificationCenter() {
       {aperto && (
         <div className="notif-dropdown">
           <div className="notif-header">
-            <strong>Notifiche</strong>
+            <strong>{t('notifiche.titolo')}</strong>
             <div className="notif-header-azioni">
               <button
                 type="button"
                 className={soloNonLette ? 'notif-filtro attivo' : 'notif-filtro'}
                 onClick={() => setSoloNonLette((v) => !v)}
               >
-                {soloNonLette ? 'Tutte' : 'Non lette'}
+                {soloNonLette ? t('notifiche.tutte') : t('notifiche.nonLette')}
               </button>
               {nonLette > 0 && (
                 <button type="button" className="notif-filtro" onClick={segnaTutte}>
-                  Segna lette
+                  {t('notifiche.segnaLette')}
                 </button>
               )}
             </div>
           </div>
 
           <ul className="notif-lista">
-            {visibili.length === 0 && <li className="notif-vuoto">Nessuna notifica</li>}
+            {visibili.length === 0 && <li className="notif-vuoto">{t('notifiche.nessuna')}</li>}
             {visibili.map((n) => (
               <li
                 key={n._id}

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../../services/api';
 import './EmergencyButton.css';
 
@@ -15,6 +16,7 @@ function formatIndirizzo(d) {
 }
 
 function EmergencyButton() {
+  const { t } = useTranslation();
   const [aperto, setAperto] = useState(false);
   const [stato, setStato] = useState('idle');
   const [dati, setDati] = useState(null);
@@ -77,7 +79,7 @@ function EmergencyButton() {
 
   return (
     <>
-      <button type="button" className="emergency-fab" onClick={attiva} aria-label="Emergenza">
+      <button type="button" className="emergency-fab" onClick={attiva} aria-label={t('emergency.titolo')}>
         SOS
       </button>
 
@@ -90,27 +92,27 @@ function EmergencyButton() {
             aria-modal="true"
             aria-labelledby="emergency-titolo"
           >
-            <button type="button" className="emergency-close" onClick={chiudi} aria-label="Chiudi">
+            <button type="button" className="emergency-close" onClick={chiudi} aria-label={t('emergency.chiudi')}>
               ×
             </button>
-            <h2 id="emergency-titolo">Emergenza</h2>
+            <h2 id="emergency-titolo">{t('emergency.titolo')}</h2>
 
-            {stato === 'loading' && <p aria-live="polite">Rilevamento posizione in corso…</p>}
+            {stato === 'loading' && <p aria-live="polite">{t('emergency.rilevamento')}</p>}
             {stato === 'error' && (
-              <p className="emergency-error" role="alert">Servizio non raggiungibile. Chiama comunque il 112.</p>
+              <p className="emergency-error" role="alert">{t('emergency.errore')}</p>
             )}
             {stato === 'ok' && dati && (
               <>
                 {dati.posizione && (
                   <div className="emergency-luogo">
-                    <span className="emergency-luogo-label">La tua posizione</span>
-                    <strong>{indirizzo || 'Indirizzo in ricerca…'}</strong>
+                    <span className="emergency-luogo-label">{t('emergency.tuaPosizione')}</span>
+                    <strong>{indirizzo || t('emergency.indirizzoRicerca')}</strong>
                     <span className="emergency-pos">
                       {dati.posizione.lat.toFixed(5)}, {dati.posizione.lng.toFixed(5)}
                     </span>
                   </div>
                 )}
-                {!dati.posizione && <p className="emergency-pos">Posizione non disponibile.</p>}
+                {!dati.posizione && <p className="emergency-pos">{t('emergency.posizioneNonDisp')}</p>}
 
                 <ul className="emergency-numbers">
                   {dati.numeri.map((n) => (

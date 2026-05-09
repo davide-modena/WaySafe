@@ -1,8 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Marker, Popup, useMapEvents } from 'react-leaflet';
+import { useTranslation } from 'react-i18next';
 import L from 'leaflet';
 import api from '../../services/api';
-import { categoriaLabel, categoriaColore } from './reportCategories';
+import { categoriaColore } from './reportCategories';
 
 function icona(colore) {
   return L.divIcon({
@@ -14,6 +15,7 @@ function icona(colore) {
 }
 
 function ReportMarkers() {
+  const { t } = useTranslation();
   const [reports, setReports] = useState([]);
   const loadingRef = useRef(false);
 
@@ -49,7 +51,7 @@ function ReportMarkers() {
     return (
       <Marker key={r._id} position={[lat, lng]} icon={icona(categoriaColore[r.categoria] || categoriaColore.altro)}>
         <Popup>
-          <strong>{categoriaLabel[r.categoria] || r.categoria}</strong>
+          <strong>{t(`categoria.${r.categoria}`)}</strong>
           <br />
           {r.descrizione || null}
         </Popup>

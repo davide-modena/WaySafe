@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import {
@@ -19,6 +20,7 @@ const formIniziale = {
 };
 
 function ProfilePage() {
+  const { t, i18n } = useTranslation();
   const { updateUser } = useAuth();
   const [form, setForm] = useState(formIniziale);
   const [caricato, setCaricato] = useState(false);
@@ -51,8 +53,8 @@ function ProfilePage() {
         });
         setCaricato(true);
       })
-      .catch(() => setErrore('Impossibile caricare il profilo'));
-  }, []);
+      .catch(() => setErrore(t('profilo.erroreCaricamento')));
+  }, [t]);
 
   function campo(nome) {
     return (e) => setForm((f) => ({ ...f, [nome]: e.target.value }));
@@ -65,9 +67,13 @@ function ProfilePage() {
     try {
       const { data } = await api.patch('/users/me', form);
       updateUser(data);
-      setMessaggio('Profilo aggiornato con successo');
+      if (form.lingua && form.lingua !== i18n.language) {
+        i18n.changeLanguage(form.lingua);
+        localStorage.setItem('waysafe_lingua', form.lingua);
+      }
+      setMessaggio(t('profilo.aggiornato'));
     } catch (err) {
-      setErrore((err.response && err.response.data && err.response.data.error) || 'Errore durante il salvataggio');
+      setErrore((err.response && err.response.data && err.response.data.error) || t('profilo.erroreSalvataggio'));
     }
   }
 
@@ -75,27 +81,27 @@ function ProfilePage() {
     <div className="profile-page">
       <div className="profile-stack">
       <form className="profile-card" onSubmit={onSubmit}>
-        <h1>Il mio profilo</h1>
+        <h1>{t('profilo.titolo')}</h1>
         {messaggio && <p className="profile-ok">{messaggio}</p>}
-        {errore && <p className="profile-error">{errore}</p>}
+        {errore && <p className="profile-error" role="alert">{errore}</p>}
 
         <label>
-          Nome
+          {t('profilo.nome')}
           <input value={form.nome} onChange={campo('nome')} />
         </label>
         <label>
-          Cognome
+          {t('profilo.cognome')}
           <input value={form.cognome} onChange={campo('cognome')} />
         </label>
         <label>
-          Email
+          {t('profilo.email')}
           <input type="email" value={form.email} onChange={campo('email')} />
         </label>
         <label>
-          Percorso preferito
+          {t('profilo.percorsoPreferito')}
           <select value={form.percorsoPreferito} onChange={campo('percorsoPreferito')}>
-            <option value="piu_sicuro">Più sicuro</option>
-            <option value="bilanciato">Bilanciato</option>
+            <option value="piu_sicuro">{t('profilo.piuSicuro')}</option>
+            <option value="bilanciato">{t('profilo.bilanciato')}</option>
           </select>
         </label>
         <label className="profile-check">
@@ -104,10 +110,10 @@ function ProfilePage() {
             checked={form.notifiche}
             onChange={(e) => setForm((f) => ({ ...f, notifiche: e.target.checked }))}
           />
-          Ricevi notifiche
+          {t('profilo.riceviNotifiche')}
         </label>
         <label>
-          Lingua
+          {t('profilo.lingua')}
           <select value={form.lingua} onChange={campo('lingua')}>
             <option value="it">Italiano</option>
             <option value="en">English</option>
@@ -118,51 +124,51 @@ function ProfilePage() {
         </label>
 
         <button type="submit" className="profile-save" disabled={!caricato}>
-          Salva modifiche
+          {t('profilo.salva')}
         </button>
       </form>
 
       <section className="profile-card">
-        <h2 className="profile-sezione">I miei percorsi</h2>
+        <h2 className="profile-sezione">{t('profilo.mieiPercorsi')}</h2>
 
         <div className="percorso-blocco">
-          <h3>Percorso preferito</h3>
+          <h3>{t('profilo.percorsoPreferito')}</h3>
           {preferito ? (
             <div className="percorso-voce">
               <div className="percorso-info">
                 <strong>{preferito.da} → {preferito.a}</strong>
                 <span>
-                  {preferito.tipo === 'safest' ? 'Più sicuro' : 'Bilanciato'} ·{' '}
+                  {preferito.tipo === 'safest' ? t('profilo.piuSicuro') : t('profilo.bilanciato')} ·{' '}
                   {(preferito.distanceM / 1000).toFixed(1)} km
                 </span>
               </div>
               <button type="button" className="percorso-rimuovi" onClick={eliminaPreferito}>
-                Rimuovi
+                {t('profilo.rimuovi')}
               </button>
             </div>
           ) : (
-            <p className="percorso-vuoto">Nessun percorso preferito salvato.</p>
+            <p className="percorso-vuoto">{t('profilo.nessunPreferito')}</p>
           )}
         </div>
 
         <div className="percorso-blocco">
-          <h3>Cronologia</h3>
+          <h3>{t('profilo.cronologia')}</h3>
           {cronologia.length === 0 ? (
-            <p className="percorso-vuoto">Nessun percorso recente.</p>
+            <p className="percorso-vuoto">{t('profilo.nessunRecente')}</p>
           ) : (
             <ul className="percorso-lista">
               {cronologia.map((v) => (
                 <li key={v.id} className="percorso-voce">
                   <div className="percorso-info">
                     <strong>{v.da} → {v.a}</strong>
-                    <span>{new Date(v.quando).toLocaleDateString('it-IT')}</span>
+                    <span>{new Date(v.quando).toLocaleDateString(i18n.language)}</span>
                   </div>
                   <button
                     type="button"
                     className="percorso-rimuovi"
                     onClick={() => eliminaCronologia(v.id)}
                   >
-                    Rimuovi
+                    {t('profilo.rimuovi')}
                   </button>
                 </li>
               ))}

@@ -1,10 +1,11 @@
 import { useEffect, useState, useCallback } from 'react';
 import { MapContainer, TileLayer, useMap } from 'react-leaflet';
+import { useTranslation } from 'react-i18next';
 import HeatmapLayer from '../components/Map/HeatmapLayer';
 import ReportMarkers from '../components/Map/ReportMarkers';
 import EmergencyButton from '../components/Emergency/EmergencyButton';
 import api from '../services/api';
-import { categoriaLabel, categoriaColore } from '../components/Map/reportCategories';
+import { categoriaColore } from '../components/Map/reportCategories';
 import './DashboardOperatore.css';
 
 const DEFAULT_CENTER = [
@@ -18,19 +19,10 @@ const TILE_ATTR =
 const TILE_URL = 'https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png';
 
 const STATI_TAB = [
-  { value: 'in_attesa', label: 'In attesa' },
-  { value: 'approvata', label: 'Approvate' },
-  { value: 'rifiutata', label: 'Rifiutate' },
+  { value: 'in_attesa', label: 'inAttesa' },
+  { value: 'approvata', label: 'approvate' },
+  { value: 'rifiutata', label: 'rifiutate' },
 ];
-
-function formatData(d) {
-  return new Date(d).toLocaleString('it-IT', {
-    day: '2-digit',
-    month: '2-digit',
-    hour: '2-digit',
-    minute: '2-digit'
-  });
-}
 
 function CentraMap({ coord }) {
   const map = useMap();
@@ -41,6 +33,7 @@ function CentraMap({ coord }) {
 }
 
 function DashboardOperatore() {
+  const { t, i18n } = useTranslation();
   const [reports, setReports] = useState([]);
   const [caricamento, setCaricamento] = useState(true);
   const [errore, setErrore] = useState(false);
@@ -76,33 +69,42 @@ function DashboardOperatore() {
     setInCorso(null);
   }
 
+  function formatData(d) {
+    return new Date(d).toLocaleString(i18n.language, {
+      day: '2-digit',
+      month: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
   return (
     <div className="op-shell">
       <aside className="op-sidebar">
         <div className="op-sidebar-top">
           <div className="op-sidebar-header">
-            <h2>Segnalazioni</h2>
+            <h2>{t('operatore.segnalazioni')}</h2>
             <span className="op-count">{reports.length}</span>
           </div>
           <div className="op-tabs">
-            {STATI_TAB.map((t) => (
+            {STATI_TAB.map((tab) => (
               <button
-                key={t.value}
+                key={tab.value}
                 type="button"
-                className={filtro === t.value ? 'op-tab attiva' : 'op-tab'}
-                onClick={() => setFiltro(t.value)}
+                className={filtro === tab.value ? 'op-tab attiva' : 'op-tab'}
+                onClick={() => setFiltro(tab.value)}
               >
-                {t.label}
+                {t(`operatore.${tab.label}`)}
               </button>
             ))}
           </div>
         </div>
 
         <div className="op-lista-wrap">
-          {caricamento && <p className="op-info">Caricamento…</p>}
-          {errore && <p className="op-error">Impossibile caricare le segnalazioni.</p>}
+          {caricamento && <p className="op-info">{t('operatore.caricamento')}</p>}
+          {errore && <p className="op-error">{t('operatore.erroreCaricamento')}</p>}
           {!caricamento && !errore && reports.length === 0 && (
-            <p className="op-info">Nessuna segnalazione.</p>
+            <p className="op-info">{t('operatore.nessuna')}</p>
           )}
           <ul className="op-lista">
             {reports.map((r) => {
@@ -118,13 +120,13 @@ function DashboardOperatore() {
                       className="op-cat"
                       style={{ background: categoriaColore[r.categoria] || categoriaColore.altro }}
                     >
-                      {categoriaLabel[r.categoria] || r.categoria}
+                      {t(`categoria.${r.categoria}`)}
                     </span>
                     <span className="op-data">{formatData(r.createdAt)}</span>
                   </div>
                   {r.descrizione && <p className="op-desc">{r.descrizione}</p>}
                   <p className="op-meta">
-                    {r.userId ? `${r.userId.nome} ${r.userId.cognome}` : 'Utente'} ·{' '}
+                    {r.userId ? `${r.userId.nome} ${r.userId.cognome}` : t('operatore.utente')} ·{' '}
                     {lat.toFixed(4)}, {lng.toFixed(4)}
                   </p>
                   {filtro === 'in_attesa' && (
@@ -135,7 +137,7 @@ function DashboardOperatore() {
                         disabled={inCorso === r._id}
                         onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'approvata'); }}
                       >
-                        Approva
+                        {t('operatore.approva')}
                       </button>
                       <button
                         type="button"
@@ -143,7 +145,7 @@ function DashboardOperatore() {
                         disabled={inCorso === r._id}
                         onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'rifiutata'); }}
                       >
-                        Rifiuta
+                        {t('operatore.rifiuta')}
                       </button>
                       <button
                         type="button"
@@ -151,7 +153,7 @@ function DashboardOperatore() {
                         disabled={inCorso === r._id}
                         onClick={(e) => { e.stopPropagation(); aggiorna(r._id, 'archiviata'); }}
                       >
-                        Archivia
+                        {t('operatore.archivia')}
                       </button>
                     </div>
                   )}

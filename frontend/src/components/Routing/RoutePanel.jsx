@@ -1,24 +1,25 @@
 import { useState } from 'react';
-import { levelColor, levelLabel } from '../Map/safetyLevels';
+import { useTranslation } from 'react-i18next';
+import { levelColor } from '../Map/safetyLevels';
 import { coloreSelezionato, coloreAlternativo } from '../Map/RouteDisplay';
 import { istruzione, formatDistanza, formatDurata } from './routeInstructions';
 import './RoutePanel.css';
 
-const etichetta = { safest: 'Più sicuro', balanced: 'Bilanciato' };
-
 function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi, onSalva, salvato, onAvvia }) {
+  const { t } = useTranslation();
   const [mostraTappe, setMostraTappe] = useState(false);
 
   if (!percorsi || percorsi.length === 0) return null;
   const attivo = percorsi[selezionato];
+  const etichetta = { safest: t('route.piuSicuro'), balanced: t('route.bilanciato') };
 
   return (
     <div className="route-panel">
-      <button type="button" className="route-panel-close" onClick={onChiudi} aria-label="Chiudi">
+      <button type="button" className="route-panel-close" onClick={onChiudi} aria-label={t('route.chiudi')}>
         ×
       </button>
       <button type="button" className="route-panel-salva" onClick={onSalva} disabled={salvato}>
-        {salvato ? '★ Preferito' : '☆ Salva'}
+        {salvato ? `★ ${t('route.preferito')}` : `☆ ${t('route.salva')}`}
       </button>
 
       <div className="route-tabs">
@@ -39,14 +40,14 @@ function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi, onSalva, sal
               {formatDistanza(p.distanceM)} · {formatDurata(p.durationS)}
             </span>
             <span className="route-badge" style={{ background: levelColor[p.safetyLevel] }}>
-              {levelLabel[p.safetyLevel]}
+              {t(`livello.${p.safetyLevel}`)}
             </span>
           </button>
         ))}
       </div>
 
       <button type="button" className="route-avvia" onClick={() => onAvvia(selezionato)}>
-        Avvia
+        {t('route.avvia')}
       </button>
 
       <button
@@ -54,15 +55,19 @@ function RoutePanel({ percorsi, selezionato, onSeleziona, onChiudi, onSalva, sal
         className="route-toggle-tappe"
         onClick={() => setMostraTappe((v) => !v)}
       >
-        {mostraTappe ? 'Nascondi indicazioni' : `Mostra indicazioni (${attivo.tappe.length})`}
+        {mostraTappe
+          ? t('route.nascondiIndicazioni')
+          : t('route.mostraIndicazioni', { count: attivo.tappe.length })}
       </button>
 
       {mostraTappe && (
         <ol className="route-steps">
-          {attivo.tappe.map((t, i) => (
+          {attivo.tappe.map((tappa, i) => (
             <li key={i}>
-              <span className="route-step-testo">{istruzione(t)}</span>
-              {t.distanceM > 0 && <span className="route-step-dist">{formatDistanza(t.distanceM)}</span>}
+              <span className="route-step-testo">{istruzione(tappa, t)}</span>
+              {tappa.distanceM > 0 && (
+                <span className="route-step-dist">{formatDistanza(tappa.distanceM)}</span>
+              )}
             </li>
           ))}
         </ol>
