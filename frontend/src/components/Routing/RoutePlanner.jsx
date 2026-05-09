@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import AddressInput from './AddressInput';
 import './RoutePlanner.css';
 
@@ -12,11 +13,12 @@ function RoutePlanner({
   onCalcola,
   stato
 }) {
+  const { t } = useTranslation();
   return (
     <div className="route-planner">
       <div className="route-row">
         <AddressInput
-          placeholder="Partenza"
+          placeholder={t('planner.partenza')}
           valore={partenza ? partenza.label : ''}
           onSelect={onPartenza}
         />
@@ -24,19 +26,19 @@ function RoutePlanner({
           type="button"
           className="route-mypos"
           onClick={onMiaPosizione}
-          title="Usa la mia posizione"
-          aria-label="Usa la mia posizione"
+          title={t('planner.miaPosizione')}
+          aria-label={t('planner.miaPosizione')}
         >
           ◎
         </button>
       </div>
 
-      <button type="button" className="route-swap" onClick={onSwap} aria-label="Inverti partenza e destinazione">
+      <button type="button" className="route-swap" onClick={onSwap} aria-label={t('planner.inverti')}>
         ⇅
       </button>
 
       <AddressInput
-        placeholder="Destinazione"
+        placeholder={t('planner.destinazione')}
         valore={destinazione ? destinazione.label : ''}
         onSelect={onDestinazione}
       />
@@ -47,9 +49,9 @@ function RoutePlanner({
         disabled={!pronto || stato === 'loading'}
         onClick={onCalcola}
       >
-        {stato === 'loading' ? 'Calcolo in corso…' : 'Calcola percorso'}
+        {stato === 'loading' ? t('planner.calcolando') : t('planner.calcola')}
       </button>
-      {stato === 'error' && <p className="route-nota">Impossibile calcolare il percorso. Riprova.</p>}
+      {stato === 'error' && <p className="route-nota">{t('planner.errore')}</p>}
     </div>
   );
 }

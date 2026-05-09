@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import './auth.css';
 
@@ -7,6 +8,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/v1';
 
 function LoginPage() {
   const { login, loginConToken } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [params] = useSearchParams();
   const [email, setEmail] = useState('');
@@ -28,24 +30,24 @@ function LoginPage() {
       await login(email, password);
       navigate('/');
     } catch (err) {
-      setErrore((err.response && err.response.data && err.response.data.error) || 'Accesso non riuscito');
+      setErrore((err.response && err.response.data && err.response.data.error) || t('login.errore'));
     }
   }
 
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={onSubmit}>
-        <h1>Accedi</h1>
+        <h1>{t('login.titolo')}</h1>
         {errore && <p className="auth-error" role="alert">{errore}</p>}
         <label>
-          Email
+          {t('login.email')}
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         </label>
         <label>
-          Password
+          {t('login.password')}
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         </label>
-        <button type="submit" className="auth-submit">Accedi</button>
+        <button type="submit" className="auth-submit">{t('login.submit')}</button>
         <a className="auth-google" href={`${API_URL}/auth/google`}>
           <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true">
             <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
@@ -54,10 +56,10 @@ function LoginPage() {
             <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
             <path fill="none" d="M0 0h48v48H0z"/>
           </svg>
-          Accedi con Google
+          {t('login.google')}
         </a>
         <p className="auth-switch">
-          Non hai un account? <Link to="/register">Registrati</Link>
+          {t('login.noAccount')} <Link to="/register">{t('nav.registrati')}</Link>
         </p>
       </form>
     </div>

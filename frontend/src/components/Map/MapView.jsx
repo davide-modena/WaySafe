@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { MapContainer, TileLayer } from 'react-leaflet';
 import HeatmapLayer from './HeatmapLayer';
 import HeatmapLegend from './HeatmapLegend';
@@ -38,6 +39,7 @@ function isNotte() {
 }
 
 function MapView({ children }) {
+  const { t } = useTranslation();
   const [zona, setZona] = useState(null);
   const [notte, setNotte] = useState(isNotte());
   const [partenza, setPartenza] = useState(null);
@@ -189,7 +191,7 @@ function MapView({ children }) {
       {!navigazione && modo === 'pianifica' && (
         <div className="routing-sidebar">
           <button type="button" className="routing-back" onClick={tornaCerca}>
-            ← Cerca un luogo
+            ← {t('planner.tornaCerca')}
           </button>
           <RoutePlanner
             partenza={partenza}

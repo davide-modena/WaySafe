@@ -1,10 +1,13 @@
 import { Link, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import NotificationCenter from '../Notifications/NotificationCenter';
+import LanguageSelector from './LanguageSelector';
 import './Navbar.css';
 
 function Navbar() {
   const { isAuthenticated, user, logout } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   function onLogout() {
@@ -18,21 +21,22 @@ function Navbar() {
         WaySafe
       </Link>
       <nav className="navbar-links">
+        <LanguageSelector />
         {isAuthenticated ? (
           <>
             <NotificationCenter />
             <Link to="/profile" className="navbar-user">
-              {user ? user.nome : 'Profilo'}
+              {user ? user.nome : t('nav.profilo')}
             </Link>
             <button type="button" className="navbar-logout" onClick={onLogout}>
-              Esci
+              {t('nav.esci')}
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">Accedi</Link>
+            <Link to="/login">{t('nav.accedi')}</Link>
             <Link to="/register" className="navbar-cta">
-              Registrati
+              {t('nav.registrati')}
             </Link>
           </>
         )}

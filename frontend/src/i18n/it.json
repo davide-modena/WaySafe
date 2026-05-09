@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "accedi": "Accedi",
+    "registrati": "Registrati",
+    "esci": "Esci",
+    "profilo": "Profilo"
+  },
+  "search": {
+    "placeholder": "Cerca un luogo a Trento",
+    "pianifica": "Pianifica percorso"
+  },
+  "planner": {
+    "partenza": "Partenza",
+    "destinazione": "Destinazione",
+    "miaPosizione": "Usa la mia posizione",
+    "inverti": "Inverti partenza e destinazione",
+    "calcola": "Calcola percorso",
+    "calcolando": "Calcolo in corso…",
+    "errore": "Impossibile calcolare il percorso. Riprova.",
+    "tornaCerca": "Cerca un luogo"
+  },
+  "login": {
+    "titolo": "Accedi",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Accedi",
+    "google": "Accedi con Google",
+    "noAccount": "Non hai un account?",
+    "errore": "Accesso non riuscito"
+  },
+  "register": {
+    "titolo": "Registrati",
+    "nome": "Nome",
+    "cognome": "Cognome",
+    "email": "Email",
+    "password": "Password",
+    "conferma": "Conferma password",
+    "submit": "Crea account",
+    "haiAccount": "Hai già un account?",
+    "compila": "Compila tutti i campi",
+    "emailNonValida": "Email non valida",
+    "passwordCorta": "La password deve avere almeno 6 caratteri",
+    "passwordDiverse": "Le password non coincidono",
+    "errore": "Registrazione non riuscita"
+  },
+  "lingua": "Lingua"
+}

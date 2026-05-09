@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "accedi": "Anmelden",
+    "registrati": "Registrieren",
+    "esci": "Abmelden",
+    "profilo": "Profil"
+  },
+  "search": {
+    "placeholder": "Ort in Trient suchen",
+    "pianifica": "Route planen"
+  },
+  "planner": {
+    "partenza": "Start",
+    "destinazione": "Ziel",
+    "miaPosizione": "Meinen Standort verwenden",
+    "inverti": "Start und Ziel tauschen",
+    "calcola": "Route berechnen",
+    "calcolando": "Wird berechnet…",
+    "errore": "Route konnte nicht berechnet werden. Erneut versuchen.",
+    "tornaCerca": "Ort suchen"
+  },
+  "login": {
+    "titolo": "Anmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "submit": "Anmelden",
+    "google": "Mit Google anmelden",
+    "noAccount": "Noch kein Konto?",
+    "errore": "Anmeldung fehlgeschlagen"
+  },
+  "register": {
+    "titolo": "Registrieren",
+    "nome": "Vorname",
+    "cognome": "Nachname",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "conferma": "Passwort bestätigen",
+    "submit": "Konto erstellen",
+    "haiAccount": "Schon ein Konto?",
+    "compila": "Bitte alle Felder ausfüllen",
+    "emailNonValida": "Ungültige E-Mail",
+    "passwordCorta": "Das Passwort muss mindestens 6 Zeichen haben",
+    "passwordDiverse": "Passwörter stimmen nicht überein",
+    "errore": "Registrierung fehlgeschlagen"
+  },
+  "lingua": "Sprache"
+}

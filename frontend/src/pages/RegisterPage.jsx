@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import './auth.css';
 
@@ -7,6 +8,7 @@ const formIniziale = { nome: '', cognome: '', email: '', password: '', conferma:
 
 function RegisterPage() {
   const { register } = useAuth();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [form, setForm] = useState(formIniziale);
   const [errore, setErrore] = useState('');
@@ -17,16 +19,16 @@ function RegisterPage() {
 
   function valida() {
     if (!form.nome || !form.cognome || !form.email || !form.password) {
-      return 'Compila tutti i campi';
+      return t('register.compila');
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      return 'Email non valida';
+      return t('register.emailNonValida');
     }
     if (form.password.length < 6) {
-      return 'La password deve avere almeno 6 caratteri';
+      return t('register.passwordCorta');
     }
     if (form.password !== form.conferma) {
-      return 'Le password non coincidono';
+      return t('register.passwordDiverse');
     }
     return '';
   }
@@ -48,38 +50,38 @@ function RegisterPage() {
       });
       navigate('/');
     } catch (err) {
-      setErrore((err.response && err.response.data && err.response.data.error) || 'Registrazione non riuscita');
+      setErrore((err.response && err.response.data && err.response.data.error) || t('register.errore'));
     }
   }
 
   return (
     <div className="auth-page">
       <form className="auth-card" onSubmit={onSubmit}>
-        <h1>Registrati</h1>
+        <h1>{t('register.titolo')}</h1>
         {errore && <p className="auth-error" role="alert">{errore}</p>}
         <label>
-          Nome
+          {t('register.nome')}
           <input value={form.nome} onChange={aggiorna('nome')} required />
         </label>
         <label>
-          Cognome
+          {t('register.cognome')}
           <input value={form.cognome} onChange={aggiorna('cognome')} required />
         </label>
         <label>
-          Email
+          {t('register.email')}
           <input type="email" value={form.email} onChange={aggiorna('email')} required />
         </label>
         <label>
-          Password
+          {t('register.password')}
           <input type="password" value={form.password} onChange={aggiorna('password')} required />
         </label>
         <label>
-          Conferma password
+          {t('register.conferma')}
           <input type="password" value={form.conferma} onChange={aggiorna('conferma')} required />
         </label>
-        <button type="submit" className="auth-submit">Crea account</button>
+        <button type="submit" className="auth-submit">{t('register.submit')}</button>
         <p className="auth-switch">
-          Hai già un account? <Link to="/login">Accedi</Link>
+          {t('register.haiAccount')} <Link to="/login">{t('nav.accedi')}</Link>
         </p>
       </form>
     </div>

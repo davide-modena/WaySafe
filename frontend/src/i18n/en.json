@@ -1,0 +1,47 @@
+{
+  "nav": {
+    "accedi": "Log in",
+    "registrati": "Sign up",
+    "esci": "Log out",
+    "profilo": "Profile"
+  },
+  "search": {
+    "placeholder": "Search a place in Trento",
+    "pianifica": "Plan a route"
+  },
+  "planner": {
+    "partenza": "From",
+    "destinazione": "To",
+    "miaPosizione": "Use my location",
+    "inverti": "Swap origin and destination",
+    "calcola": "Calculate route",
+    "calcolando": "Calculating…",
+    "errore": "Unable to calculate the route. Try again.",
+    "tornaCerca": "Search a place"
+  },
+  "login": {
+    "titolo": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Log in",
+    "google": "Sign in with Google",
+    "noAccount": "Don't have an account?",
+    "errore": "Login failed"
+  },
+  "register": {
+    "titolo": "Sign up",
+    "nome": "First name",
+    "cognome": "Last name",
+    "email": "Email",
+    "password": "Password",
+    "conferma": "Confirm password",
+    "submit": "Create account",
+    "haiAccount": "Already have an account?",
+    "compila": "Fill in all fields",
+    "emailNonValida": "Invalid email",
+    "passwordCorta": "Password must be at least 6 characters",
+    "passwordDiverse": "Passwords do not match",
+    "errore": "Registration failed"
+  },
+  "lingua": "Language"
+}
