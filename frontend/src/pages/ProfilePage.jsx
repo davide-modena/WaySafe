@@ -118,8 +118,6 @@ function ProfilePage() {
             <option value="it">Italiano</option>
             <option value="en">English</option>
             <option value="de">Deutsch</option>
-            <option value="es">Español</option>
-            <option value="fr">Français</option>
           </select>
         </label>
 

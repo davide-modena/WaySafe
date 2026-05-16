@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import NotificationCenter from '../Notifications/NotificationCenter';
 import LanguageSelector from './LanguageSelector';
+import logoText from '../../assets/logo.png';
 import './Navbar.css';
 
 function Navbar() {
@@ -18,7 +19,7 @@ function Navbar() {
   return (
     <header className="navbar">
       <Link to="/" className="navbar-brand">
-        WaySafe
+        <img src={logoText} alt="WaySafe" className="navbar-logo" />
       </Link>
       <nav className="navbar-links">
         <LanguageSelector />
