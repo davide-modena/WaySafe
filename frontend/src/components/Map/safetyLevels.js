@@ -4,10 +4,3 @@ export const levelColor = {
   risk: '#FF7043',
   danger: '#F44336'
 };
-
-export const levelLabel = {
-  safe: 'Sicuro',
-  moderate: 'Moderato',
-  risk: 'A rischio',
-  danger: 'Pericoloso'
-};
