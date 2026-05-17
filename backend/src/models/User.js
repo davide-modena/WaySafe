@@ -10,7 +10,7 @@ const userSchema = new mongoose.Schema(
     ruolo: { type: String, enum: ['utente', 'operatore', 'admin'], default: 'utente' },
     percorsoPreferito: { type: String, enum: ['piu_sicuro', 'bilanciato'], default: 'piu_sicuro' },
     notifiche: { type: Boolean, default: true },
-    lingua: { type: String, enum: ['it', 'en', 'de', 'es', 'fr'], default: 'it' }
+    lingua: { type: String, enum: ['it', 'en', 'de'], default: 'it' }
   },
   { timestamps: true }
 );

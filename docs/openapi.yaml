@@ -1,0 +1,1298 @@
+openapi: 3.0.4
+info:
+  version: '1.0'
+  title: "WaySafe OpenAPI 3.0"
+  description: >-
+    API di WaySafe, web app per la navigazione urbana sicura a Trento.
+    Gestisce autenticazione, profili utente, mappa di sicurezza (heatmap),
+    calcolo percorsi sicuri/bilanciati, segnalazioni cittadine, validazione
+    da parte degli operatori comunali, statistiche ed emergenze.
+  license:
+    name: MIT
+servers:
+  - url: https://waysafe-backend.onrender.com/api/v1
+    description: render.com (produzione)
+
+tags:
+  - name: Health
+    description: Stato del servizio
+  - name: Auth
+    description: Registrazione, accesso e login con Google
+  - name: Users
+    description: Profilo dell'utente autenticato
+  - name: Heatmap
+    description: Mappa di sicurezza delle strade
+  - name: Routes
+    description: Calcolo dei percorsi sicuri e bilanciati
+  - name: Reports
+    description: Segnalazioni cittadine
+  - name: Operator
+    description: Operazioni riservate agli operatori comunali
+  - name: Stats
+    description: Statistiche sulle segnalazioni
+  - name: Notifications
+    description: Notifiche in-app per l'utente autenticato
+  - name: Emergency
+    description: Numeri di emergenza
+
+paths:
+
+  /health:
+    get:
+      tags: [Health]
+      operationId: getHealth
+      summary: Stato del servizio
+      description: Restituisce lo stato del backend e l'uptime del processo.
+      responses:
+        '200':
+          description: 'Servizio operativo'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: ok
+                  uptime:
+                    type: number
+                    description: 'Secondi di attività del processo'
+                  timestamp:
+                    type: string
+                    format: date-time
+              example:
+                status: ok
+                uptime: 1342.87
+                timestamp: '2026-05-10T18:30:00.000Z'
+
+  /auth/register:
+    post:
+      tags: [Auth]
+      operationId: register
+      summary: Registra un nuovo utente
+      description: >-
+        Crea un nuovo utente con ruolo 'utente' e restituisce un token JWT.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [nome, cognome, email, password]
+              properties:
+                nome:
+                  type: string
+                cognome:
+                  type: string
+                email:
+                  type: string
+                password:
+                  type: string
+            examples:
+              example1:
+                value:
+                  nome: 'Mario'
+                  cognome: 'Rossi'
+                  email: 'mario.rossi@unitn.it'
+                  password: 'password'
+      responses:
+        '201':
+          description: 'Utente creato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              example:
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MzBhMSIsInJ1b2xvIjoidXRlbnRlIn0.abc123'
+                user:
+                  id: '6630a1f2b9c4d8e1a2b3c4d5'
+                  nome: 'Mario'
+                  cognome: 'Rossi'
+                  email: 'mario.rossi@unitn.it'
+                  ruolo: 'utente'
+                  percorsoPreferito: 'piu_sicuro'
+                  notifiche: true
+                  lingua: 'it'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /auth/login:
+    post:
+      tags: [Auth]
+      operationId: login
+      summary: Autentica un utente
+      description: >-
+        Verifica le credenziali e restituisce un token JWT insieme ai dati pubblici dell'utente.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [email, password]
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+            examples:
+              example1:
+                value:
+                  email: 'mario.rossi@unitn.it'
+                  password: 'password'
+      responses:
+        '200':
+          description: 'Token creato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+              example:
+                token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2MzBhMSIsInJ1b2xvIjoidXRlbnRlIn0.abc123'
+                user:
+                  id: '6630a1f2b9c4d8e1a2b3c4d5'
+                  nome: 'Mario'
+                  cognome: 'Rossi'
+                  email: 'mario.rossi@unitn.it'
+                  ruolo: 'utente'
+                  percorsoPreferito: 'piu_sicuro'
+                  notifiche: true
+                  lingua: 'it'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /auth/google:
+    get:
+      tags: [Auth]
+      operationId: googleLogin
+      summary: Avvia il login con Google
+      description: >-
+        Reindirizza l'utente al consenso OAuth2 di Google.
+        Risponde 503 se l'accesso con Google non è configurato sul server.
+      responses:
+        '302':
+          description: 'Redirect alla pagina di consenso di Google'
+        '503':
+          description: 'Accesso con Google non configurato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: 'Accesso con Google non configurato'
+
+  /auth/google/callback:
+    get:
+      tags: [Auth]
+      operationId: googleCallback
+      summary: Callback OAuth2 di Google
+      description: >-
+        Endpoint di ritorno dopo il consenso Google.
+        In caso di successo reindirizza al frontend con il token JWT in query string.
+      responses:
+        '302':
+          description: 'Redirect al frontend con token (o con errore in caso di fallimento)'
+        '503':
+          description: 'Accesso con Google non configurato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: 'Accesso con Google non configurato'
+
+  /users/me:
+    get:
+      tags: [Users]
+      operationId: getMe
+      summary: Recupera il proprio profilo
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 'Dati pubblici dell utente autenticato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: '6630a1f2b9c4d8e1a2b3c4d5'
+                nome: 'Mario'
+                cognome: 'Rossi'
+                email: 'mario.rossi@unitn.it'
+                ruolo: 'utente'
+                percorsoPreferito: 'piu_sicuro'
+                notifiche: true
+                lingua: 'it'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      tags: [Users]
+      operationId: updateMe
+      summary: Aggiorna il proprio profilo
+      description: >-
+        Aggiorna i campi modificabili del profilo: nome, cognome, email,
+        percorsoPreferito, notifiche, lingua.
+      security:
+        - BearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: string
+                cognome:
+                  type: string
+                email:
+                  type: string
+                percorsoPreferito:
+                  type: string
+                  enum: [piu_sicuro, bilanciato]
+                notifiche:
+                  type: boolean
+                lingua:
+                  type: string
+                  enum: [it, en, de]
+            examples:
+              example1:
+                value:
+                  percorsoPreferito: 'bilanciato'
+                  lingua: 'en'
+      responses:
+        '200':
+          description: 'Profilo aggiornato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+              example:
+                id: '6630a1f2b9c4d8e1a2b3c4d5'
+                nome: 'Mario'
+                cognome: 'Rossi'
+                email: 'mario.rossi@unitn.it'
+                ruolo: 'utente'
+                percorsoPreferito: 'bilanciato'
+                notifiche: true
+                lingua: 'en'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+
+  /heatmap:
+    get:
+      tags: [Heatmap]
+      operationId: getHeatmap
+      summary: Mappa di sicurezza delle strade
+      description: >-
+        Restituisce un FeatureCollection GeoJSON delle strade con il relativo
+        punteggio di sicurezza. È possibile limitare l'area con il parametro
+        bbox nel formato south,west,north,east.
+      parameters:
+        - in: query
+          name: bbox
+          schema:
+            type: string
+          description: 'Bounding box south,west,north,east'
+          example: '46.04,11.10,46.09,11.15'
+      responses:
+        '200':
+          description: 'FeatureCollection GeoJSON delle strade'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatmapFeatureCollection'
+              example:
+                type: 'FeatureCollection'
+                features:
+                  - type: 'Feature'
+                    geometry:
+                      type: 'LineString'
+                      coordinates: [[11.1217, 46.0667], [11.1205, 46.0689]]
+                    properties:
+                      id: 'way/12345678'
+                      name: 'Via Roma'
+                      highway: 'residential'
+                      safetyScore: 58
+                      safetyLevel: 'moderate'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+
+  /heatmap/point:
+    get:
+      tags: [Heatmap]
+      operationId: getHeatmapPoint
+      summary: Sicurezza di un punto
+      description: >-
+        Restituisce il punteggio di sicurezza della strada più vicina al punto
+        indicato (entro 40 metri).
+      parameters:
+        - in: query
+          name: lat
+          required: true
+          schema:
+            type: number
+          example: 46.0667
+        - in: query
+          name: lng
+          required: true
+          schema:
+            type: number
+          example: 11.1217
+      responses:
+        '200':
+          description: 'Strada trovata'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  safetyLevel:
+                    $ref: '#/components/schemas/SafetyLevel'
+                  safetyScore:
+                    type: integer
+                  streetName:
+                    type: string
+                  distanceM:
+                    type: integer
+              example:
+                safetyLevel: 'moderate'
+                safetyScore: 58
+                streetName: 'Via Roma'
+                distanceM: 12
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /routes/safest:
+    post:
+      tags: [Routes]
+      operationId: getSafestRoute
+      summary: Calcola il percorso più sicuro
+      description: >-
+        Calcola i percorsi pedonali tra start ed end (via OSRM) e seleziona
+        quello con il punteggio di sicurezza medio più alto.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RouteRequest'
+            examples:
+              example1:
+                value:
+                  start: { lat: 46.0667, lng: 11.1217 }
+                  end: { lat: 46.0721, lng: 11.1190 }
+      responses:
+        '200':
+          description: 'Percorso calcolato'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RouteResponse'
+              example:
+                start: { lat: 46.0667, lng: 11.1217 }
+                end: { lat: 46.0721, lng: 11.1190 }
+                route:
+                  geometry:
+                    type: 'LineString'
+                    coordinates: [[11.1217, 46.0667], [11.1200, 46.0700], [11.1190, 46.0721]]
+                  distanceM: 540
+                  durationS: 430
+                  safetyScore: 72
+                  safetyLevel: 'safe'
+                  minScore: 61
+                  breakdown: { safe: 18, moderate: 14, risk: 3, danger: 0 }
+                  tappe:
+                    - manovra: 'depart'
+                      direzione: null
+                      strada: 'Via Roma'
+                      distanceM: 120
+                      location: { lat: 46.0667, lng: 11.1217 }
+                alternatives: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+
+  /routes/balanced:
+    post:
+      tags: [Routes]
+      operationId: getBalancedRoute
+      summary: Calcola il percorso bilanciato
+      description: >-
+        Calcola il percorso che massimizza una funzione di utilità pesata tra
+        sicurezza e rapidità. I pesi sono facoltativi (default sicurezza 0.6,
+        rapidita 0.4) e vengono normalizzati.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/RouteRequest'
+                - type: object
+                  properties:
+                    pesi:
+                      $ref: '#/components/schemas/Pesi'
+            examples:
+              example1:
+                value:
+                  start: { lat: 46.0667, lng: 11.1217 }
+                  end: { lat: 46.0721, lng: 11.1190 }
+                  pesi: { sicurezza: 0.7, rapidita: 0.3 }
+      responses:
+        '200':
+          description: 'Percorso calcolato'
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/RouteResponse'
+                  - type: object
+                    properties:
+                      pesi:
+                        $ref: '#/components/schemas/Pesi'
+              example:
+                start: { lat: 46.0667, lng: 11.1217 }
+                end: { lat: 46.0721, lng: 11.1190 }
+                pesi: { sicurezza: 0.7, rapidita: 0.3 }
+                route:
+                  geometry:
+                    type: 'LineString'
+                    coordinates: [[11.1217, 46.0667], [11.1198, 46.0710], [11.1190, 46.0721]]
+                  distanceM: 480
+                  durationS: 380
+                  safetyScore: 66
+                  safetyLevel: 'safe'
+                  minScore: 52
+                  breakdown: { safe: 12, moderate: 10, risk: 2, danger: 0 }
+                  utilita: 78
+                  tappe:
+                    - manovra: 'depart'
+                      direzione: null
+                      strada: 'Via Roma'
+                      distanceM: 90
+                      location: { lat: 46.0667, lng: 11.1217 }
+                alternatives: []
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+
+  /reports:
+    get:
+      tags: [Reports]
+      operationId: listReports
+      summary: Elenco delle segnalazioni
+      description: >-
+        Restituisce le segnalazioni pubbliche. Di default mostra solo quelle
+        con stato 'approvata'. Filtrabile per stato, categoria e area (bbox).
+      parameters:
+        - in: query
+          name: stato
+          schema:
+            $ref: '#/components/schemas/StatoReport'
+        - in: query
+          name: categoria
+          schema:
+            $ref: '#/components/schemas/CategoriaReport'
+        - in: query
+          name: bbox
+          schema:
+            type: string
+          description: 'Bounding box south,west,north,east'
+      responses:
+        '200':
+          description: 'Collezione di segnalazioni'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Report'
+              example:
+                - _id: '6630b2a1c4d8e1a2b3c4d5e6'
+                  userId: '6630a1f2b9c4d8e1a2b3c4d5'
+                  categoria: 'scarsa_illuminazione'
+                  posizione:
+                    type: 'Point'
+                    coordinates: [11.1217, 46.0667]
+                  descrizione: 'Lampione spento da giorni'
+                  stato: 'approvata'
+                  createdAt: '2026-05-01T20:15:00.000Z'
+                  updatedAt: '2026-05-02T09:00:00.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+    post:
+      tags: [Reports]
+      operationId: createReport
+      summary: Crea una segnalazione
+      description: >-
+        Crea una nuova segnalazione associata all'utente autenticato.
+        Viene salvata con stato 'in_attesa' fino alla validazione di un operatore.
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [categoria, lat, lng]
+              properties:
+                categoria:
+                  $ref: '#/components/schemas/CategoriaReport'
+                lat:
+                  type: number
+                lng:
+                  type: number
+                descrizione:
+                  type: string
+            examples:
+              example1:
+                value:
+                  categoria: 'scarsa_illuminazione'
+                  lat: 46.0667
+                  lng: 11.1217
+                  descrizione: 'Lampione spento da giorni'
+      responses:
+        '201':
+          description: 'Segnalazione creata'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+              example:
+                _id: '6630b2a1c4d8e1a2b3c4d5e6'
+                userId: '6630a1f2b9c4d8e1a2b3c4d5'
+                categoria: 'scarsa_illuminazione'
+                posizione:
+                  type: 'Point'
+                  coordinates: [11.1217, 46.0667]
+                descrizione: 'Lampione spento da giorni'
+                stato: 'in_attesa'
+                createdAt: '2026-05-01T20:15:00.000Z'
+                updatedAt: '2026-05-01T20:15:00.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /reports/{id}:
+    patch:
+      tags: [Reports]
+      operationId: updateReportStatus
+      summary: Aggiorna lo stato di una segnalazione
+      description: >-
+        Cambia lo stato di una segnalazione. Riservato a operatori e admin.
+        L'approvazione o il rifiuto invalida la cache della heatmap.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: 'ID della segnalazione'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [stato]
+              properties:
+                stato:
+                  $ref: '#/components/schemas/StatoReport'
+            examples:
+              example1:
+                value:
+                  stato: 'approvata'
+      responses:
+        '200':
+          description: 'Segnalazione aggiornata'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Report'
+              example:
+                _id: '6630b2a1c4d8e1a2b3c4d5e6'
+                userId: '6630a1f2b9c4d8e1a2b3c4d5'
+                categoria: 'scarsa_illuminazione'
+                posizione:
+                  type: 'Point'
+                  coordinates: [11.1217, 46.0667]
+                descrizione: 'Lampione spento da giorni'
+                stato: 'approvata'
+                createdAt: '2026-05-01T20:15:00.000Z'
+                updatedAt: '2026-05-02T09:00:00.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /operator/reports:
+    get:
+      tags: [Operator]
+      operationId: listOperatorReports
+      summary: Segnalazioni per la dashboard operatore
+      description: >-
+        Restituisce le segnalazioni per la validazione. Di default mostra quelle
+        con stato 'in_attesa'. Include i dati pubblici dell'autore.
+        Riservato a operatori e admin.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: stato
+          schema:
+            $ref: '#/components/schemas/StatoReport'
+      responses:
+        '200':
+          description: 'Collezione di segnalazioni con autore popolato'
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReportConAutore'
+              example:
+                - _id: '6630b2a1c4d8e1a2b3c4d5e6'
+                  userId:
+                    _id: '6630a1f2b9c4d8e1a2b3c4d5'
+                    nome: 'Mario'
+                    cognome: 'Rossi'
+                    email: 'mario.rossi@unitn.it'
+                  categoria: 'comportamenti_sospetti'
+                  posizione:
+                    type: 'Point'
+                    coordinates: [11.1217, 46.0667]
+                  descrizione: 'Gruppo sospetto vicino al parco'
+                  stato: 'in_attesa'
+                  createdAt: '2026-05-03T22:10:00.000Z'
+                  updatedAt: '2026-05-03T22:10:00.000Z'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /stats:
+    get:
+      tags: [Stats]
+      operationId: getStats
+      summary: Statistiche delle segnalazioni
+      description: >-
+        Aggregazioni sulle segnalazioni per categoria, stato, giorno e zona.
+        Filtrabile per intervallo di date (from, to) e categoria.
+        Riservato a operatori e admin.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: from
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: to
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: categoria
+          schema:
+            $ref: '#/components/schemas/CategoriaReport'
+      responses:
+        '200':
+          description: 'Statistiche aggregate'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Stats'
+              example:
+                totale: 42
+                perCategoria:
+                  - categoria: 'scarsa_illuminazione'
+                    count: 20
+                  - categoria: 'comportamenti_sospetti'
+                    count: 12
+                perStato:
+                  - stato: 'approvata'
+                    count: 30
+                  - stato: 'in_attesa'
+                    count: 8
+                perGiorno:
+                  - giorno: '2026-05-01'
+                    count: 5
+                perZona:
+                  - lat: 46.066
+                    lng: 11.121
+                    count: 8
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+
+  /notifications:
+    get:
+      tags: [Notifications]
+      operationId: listNotifications
+      summary: Elenco notifiche dell'utente
+      description: >-
+        Restituisce le ultime 50 notifiche dell'utente autenticato, ordinate
+        per data decrescente. Include il conteggio totale delle non lette.
+        Filtrabile con il parametro nonLette=true.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: query
+          name: nonLette
+          schema:
+            type: boolean
+          description: 'Se true, restituisce solo le notifiche non lette'
+      responses:
+        '200':
+          description: 'Notifiche recuperate'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  notifiche:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+                  nonLette:
+                    type: integer
+                    description: 'Numero totale di notifiche non lette'
+              example:
+                notifiche:
+                  - _id: '6630c3b2d8e1a2b3c4d5e6f7'
+                    userId: '6630a1f2b9c4d8e1a2b3c4d5'
+                    tipo: 'segnalazione'
+                    titolo: 'Segnalazione approvata'
+                    messaggio: 'La tua segnalazione è stata approvata da un operatore.'
+                    reportId: '6630b2a1c4d8e1a2b3c4d5e6'
+                    letta: false
+                    createdAt: '2026-05-02T09:00:00.000Z'
+                nonLette: 1
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /notifications/lette:
+    patch:
+      tags: [Notifications]
+      operationId: markAllNotificationsRead
+      summary: Segna tutte le notifiche come lette
+      description: >-
+        Marca come lette tutte le notifiche non lette dell'utente autenticato.
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: 'Notifiche aggiornate'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok:
+                    type: boolean
+                    example: true
+              example:
+                ok: true
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+
+  /notifications/{id}:
+    patch:
+      tags: [Notifications]
+      operationId: markNotificationRead
+      summary: Segna una notifica come letta
+      description: >-
+        Marca come letta la singola notifica identificata dall'id.
+        L'utente può aggiornare solo le proprie notifiche.
+      security:
+        - BearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          description: 'ID della notifica'
+      responses:
+        '200':
+          description: 'Notifica aggiornata'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+              example:
+                _id: '6630c3b2d8e1a2b3c4d5e6f7'
+                userId: '6630a1f2b9c4d8e1a2b3c4d5'
+                tipo: 'segnalazione'
+                titolo: 'Segnalazione approvata'
+                messaggio: 'La tua segnalazione è stata approvata da un operatore.'
+                reportId: '6630b2a1c4d8e1a2b3c4d5e6'
+                letta: true
+                createdAt: '2026-05-02T09:00:00.000Z'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+
+  /emergency:
+    post:
+      tags: [Emergency]
+      operationId: getEmergency
+      summary: Numeri di emergenza
+      description: >-
+        Restituisce i numeri di emergenza e, se fornita, la posizione dell'utente.
+        Pensato per il pulsante SOS.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                lat:
+                  type: number
+                lng:
+                  type: number
+            examples:
+              example1:
+                value:
+                  lat: 46.0667
+                  lng: 11.1217
+      responses:
+        '200':
+          description: 'Numeri di emergenza'
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  posizione:
+                    type: object
+                    nullable: true
+                    properties:
+                      lat:
+                        type: number
+                      lng:
+                        type: number
+                  numeri:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        nome:
+                          type: string
+                        numero:
+                          type: string
+                  timestamp:
+                    type: string
+                    format: date-time
+              example:
+                posizione:
+                  lat: 46.0667
+                  lng: 11.1217
+                numeri:
+                  - nome: 'Numero unico di emergenza'
+                    numero: '112'
+                  - nome: 'Polizia'
+                    numero: '113'
+                  - nome: 'Emergenza sanitaria'
+                    numero: '118'
+                timestamp: '2026-05-10T22:45:00.000Z'
+
+components:
+
+  securitySchemes:
+    BearerAuth:
+      description: >-
+        Autenticazione tramite token JWT.
+        Il token va passato nell'header 'Authorization' come 'Bearer <token>'.
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  responses:
+    BadRequest:
+      description: 'Richiesta non valida (parametri o corpo mancanti/errati)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Parametri non validi'
+    Unauthorized:
+      description: 'Token mancante o non valido'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Token mancante'
+    Forbidden:
+      description: 'Permessi insufficienti per la risorsa richiesta'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Permessi insufficienti'
+    NotFound:
+      description: 'Risorsa non trovata'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Risorsa non trovata'
+    Conflict:
+      description: 'Conflitto con lo stato attuale della risorsa'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Email già registrata'
+    BadGateway:
+      description: 'Errore di un servizio esterno (es. calcolo percorso non riuscito)'
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+          example:
+            error: 'Calcolo percorso non riuscito'
+
+  schemas:
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          description: 'Messaggio di errore leggibile'
+      example:
+        error: 'Token mancante'
+
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+        nome:
+          type: string
+        cognome:
+          type: string
+        email:
+          type: string
+        ruolo:
+          type: string
+          enum: [utente, operatore, admin]
+        percorsoPreferito:
+          type: string
+          enum: [piu_sicuro, bilanciato]
+        notifiche:
+          type: boolean
+        lingua:
+          type: string
+          enum: [it, en, de]
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: 'Token JWT'
+        user:
+          $ref: '#/components/schemas/User'
+
+    CategoriaReport:
+      type: string
+      enum: [scarsa_illuminazione, comportamenti_sospetti, strade_danneggiate, altro]
+
+    StatoReport:
+      type: string
+      enum: [in_attesa, approvata, rifiutata, risolta, archiviata]
+
+    SafetyLevel:
+      type: string
+      enum: [safe, moderate, risk, danger]
+
+    GeoPoint:
+      type: object
+      description: 'Punto GeoJSON, coordinate [lng, lat]'
+      properties:
+        type:
+          type: string
+          enum: [Point]
+        coordinates:
+          type: array
+          items:
+            type: number
+
+    Report:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        categoria:
+          $ref: '#/components/schemas/CategoriaReport'
+        posizione:
+          $ref: '#/components/schemas/GeoPoint'
+        descrizione:
+          type: string
+        stato:
+          $ref: '#/components/schemas/StatoReport'
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    ReportConAutore:
+      allOf:
+        - $ref: '#/components/schemas/Report'
+        - type: object
+          properties:
+            userId:
+              type: object
+              description: 'Autore popolato'
+              properties:
+                _id:
+                  type: string
+                nome:
+                  type: string
+                cognome:
+                  type: string
+                email:
+                  type: string
+
+    Coord:
+      type: object
+      required: [lat, lng]
+      properties:
+        lat:
+          type: number
+        lng:
+          type: number
+
+    RouteRequest:
+      type: object
+      required: [start, end]
+      properties:
+        start:
+          $ref: '#/components/schemas/Coord'
+        end:
+          $ref: '#/components/schemas/Coord'
+
+    Pesi:
+      type: object
+      description: 'Pesi della funzione di utilità, normalizzati lato server'
+      properties:
+        sicurezza:
+          type: number
+          default: 0.6
+        rapidita:
+          type: number
+          default: 0.4
+
+    Tappa:
+      type: object
+      properties:
+        manovra:
+          type: string
+          description: 'Tipo di manovra OSRM'
+        direzione:
+          type: string
+          nullable: true
+        strada:
+          type: string
+          nullable: true
+        distanceM:
+          type: integer
+        location:
+          $ref: '#/components/schemas/Coord'
+
+    Route:
+      type: object
+      properties:
+        geometry:
+          type: object
+          description: 'LineString GeoJSON del percorso'
+          properties:
+            type:
+              type: string
+              enum: [LineString]
+            coordinates:
+              type: array
+              items:
+                type: array
+                items:
+                  type: number
+        distanceM:
+          type: integer
+        durationS:
+          type: integer
+        safetyScore:
+          type: integer
+        safetyLevel:
+          $ref: '#/components/schemas/SafetyLevel'
+        minScore:
+          type: integer
+          nullable: true
+        breakdown:
+          type: object
+          properties:
+            safe:
+              type: integer
+            moderate:
+              type: integer
+            risk:
+              type: integer
+            danger:
+              type: integer
+        tappe:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tappa'
+        utilita:
+          type: integer
+          description: 'Presente solo nei percorsi bilanciati'
+
+    RouteResponse:
+      type: object
+      properties:
+        start:
+          $ref: '#/components/schemas/Coord'
+        end:
+          $ref: '#/components/schemas/Coord'
+        route:
+          $ref: '#/components/schemas/Route'
+        alternatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+
+    HeatmapFeatureCollection:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [FeatureCollection]
+        features:
+          type: array
+          items:
+            type: object
+            properties:
+              type:
+                type: string
+                enum: [Feature]
+              geometry:
+                type: object
+              properties:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  name:
+                    type: string
+                    nullable: true
+                  highway:
+                    type: string
+                  safetyScore:
+                    type: integer
+                  safetyLevel:
+                    $ref: '#/components/schemas/SafetyLevel'
+
+    Notification:
+      type: object
+      properties:
+        _id:
+          type: string
+        userId:
+          type: string
+        tipo:
+          type: string
+          enum: [segnalazione, messaggio, avviso]
+        titolo:
+          type: string
+        messaggio:
+          type: string
+        reportId:
+          type: string
+          nullable: true
+          description: 'ID della segnalazione correlata, se presente'
+        letta:
+          type: boolean
+          default: false
+        createdAt:
+          type: string
+          format: date-time
+
+    Stats:
+      type: object
+      properties:
+        totale:
+          type: integer
+        perCategoria:
+          type: array
+          items:
+            type: object
+            properties:
+              categoria:
+                type: string
+              count:
+                type: integer
+        perStato:
+          type: array
+          items:
+            type: object
+            properties:
+              stato:
+                type: string
+              count:
+                type: integer
+        perGiorno:
+          type: array
+          items:
+            type: object
+            properties:
+              giorno:
+                type: string
+              count:
+                type: integer
+        perZona:
+          type: array
+          items:
+            type: object
+            properties:
+              lat:
+                type: number
+              lng:
+                type: number
+              count:
+                type: integer
