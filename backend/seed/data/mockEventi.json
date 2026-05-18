@@ -1,0 +1,56 @@
+[
+  {
+    "id": "E001",
+    "tipo": "cantiere",
+    "nome": "Rifacimento manto stradale Via Brennero",
+    "lat": 46.0780, "lng": 11.1290, "radiusM": 150,
+    "attivo": true,
+    "dataInizio": "2026-06-01",
+    "dataFine": "2026-06-20"
+  },
+  {
+    "id": "E002",
+    "tipo": "manifestazione",
+    "nome": "Mercato settimanale Piazza Fiera",
+    "lat": 46.0712, "lng": 11.1180, "radiusM": 200,
+    "attivo": true,
+    "dataInizio": "2026-06-08",
+    "dataFine": "2026-06-08"
+  },
+  {
+    "id": "E003",
+    "tipo": "strada_chiusa",
+    "nome": "Chiusura per lavori fognatura Via Piave",
+    "lat": 46.0698, "lng": 11.1245, "radiusM": 100,
+    "attivo": true,
+    "dataInizio": "2026-06-05",
+    "dataFine": "2026-06-15"
+  },
+  {
+    "id": "E004",
+    "tipo": "evento",
+    "nome": "Concerto estivo Piazza Duomo",
+    "lat": 46.0668, "lng": 11.1213, "radiusM": 300,
+    "attivo": true,
+    "dataInizio": "2026-06-08",
+    "dataFine": "2026-06-08"
+  },
+  {
+    "id": "E005",
+    "tipo": "cantiere",
+    "nome": "Ristrutturazione edificio Via Torre Vanga",
+    "lat": 46.0755, "lng": 11.1168, "radiusM": 80,
+    "attivo": true,
+    "dataInizio": "2026-05-20",
+    "dataFine": "2026-07-30"
+  },
+  {
+    "id": "E006",
+    "tipo": "strada_chiusa",
+    "nome": "Deviazione traffico Via San Marco",
+    "lat": 46.0752, "lng": 11.1228, "radiusM": 120,
+    "attivo": false,
+    "dataInizio": "2026-05-01",
+    "dataFine": "2026-06-01"
+  }
+]

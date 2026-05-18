@@ -1,0 +1,22 @@
+[
+  { "id": "S001", "lat": 46.0748, "lng": 11.1155, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-06-07T21:30:00Z" },
+  { "id": "S002", "lat": 46.0758, "lng": 11.1218, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-06-07T22:15:00Z" },
+  { "id": "S003", "lat": 46.0850, "lng": 11.1250, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-06-06T23:00:00Z" },
+  { "id": "S004", "lat": 46.0695, "lng": 11.1225, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-06-06T20:45:00Z" },
+  { "id": "S005", "lat": 46.0810, "lng": 11.1320, "categoria": "strade", "stato": "approvata", "createdAt": "2026-06-05T18:00:00Z" },
+  { "id": "S006", "lat": 46.0760, "lng": 11.1170, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-06-05T22:30:00Z" },
+  { "id": "S007", "lat": 46.0618, "lng": 11.1193, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-06-04T21:00:00Z" },
+  { "id": "S008", "lat": 46.0780, "lng": 11.1290, "categoria": "strade", "stato": "approvata", "createdAt": "2026-06-04T10:30:00Z" },
+  { "id": "S009", "lat": 46.0700, "lng": 11.1165, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-06-03T23:15:00Z" },
+  { "id": "S010", "lat": 46.0725, "lng": 11.1260, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-06-03T20:00:00Z" },
+  { "id": "S011", "lat": 46.0668, "lng": 11.1213, "categoria": "altro", "stato": "approvata", "createdAt": "2026-06-02T19:30:00Z" },
+  { "id": "S012", "lat": 46.0650, "lng": 11.1260, "categoria": "strade", "stato": "approvata", "createdAt": "2026-06-01T14:00:00Z" },
+  { "id": "S013", "lat": 46.0810, "lng": 11.1315, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-05-31T22:45:00Z" },
+  { "id": "S014", "lat": 46.0735, "lng": 11.1240, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-05-30T21:00:00Z" },
+  { "id": "S015", "lat": 46.0580, "lng": 11.1200, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-05-29T23:00:00Z" },
+  { "id": "S016", "lat": 46.0690, "lng": 11.1300, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-05-28T22:00:00Z" },
+  { "id": "S017", "lat": 46.0760, "lng": 11.1175, "categoria": "strade", "stato": "approvata", "createdAt": "2026-05-27T09:00:00Z" },
+  { "id": "S018", "lat": 46.0620, "lng": 11.1155, "categoria": "sospetti", "stato": "approvata", "createdAt": "2026-05-26T22:30:00Z" },
+  { "id": "S019", "lat": 46.0800, "lng": 11.1200, "categoria": "illuminazione", "stato": "approvata", "createdAt": "2026-05-25T21:15:00Z" },
+  { "id": "S020", "lat": 46.0670, "lng": 11.1130, "categoria": "altro", "stato": "approvata", "createdAt": "2026-05-24T18:00:00Z" }
+]

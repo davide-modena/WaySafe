@@ -1,0 +1,179 @@
+{
+  "nav": {
+    "accedi": "Accedi",
+    "registrati": "Registrati",
+    "esci": "Esci",
+    "profilo": "Profilo"
+  },
+  "search": {
+    "placeholder": "Cerca un luogo a Trento",
+    "pianifica": "Pianifica percorso"
+  },
+  "planner": {
+    "partenza": "Partenza",
+    "destinazione": "Destinazione",
+    "miaPosizione": "Usa la mia posizione",
+    "inverti": "Inverti partenza e destinazione",
+    "calcola": "Calcola percorso",
+    "calcolando": "Calcolo in corso…",
+    "errore": "Impossibile calcolare il percorso. Riprova.",
+    "tornaCerca": "Cerca un luogo"
+  },
+  "route": {
+    "piuSicuro": "Più sicuro",
+    "bilanciato": "Bilanciato",
+    "avvia": "Avvia",
+    "mostraIndicazioni": "Mostra indicazioni ({{count}})",
+    "nascondiIndicazioni": "Nascondi indicazioni",
+    "salva": "Salva",
+    "preferito": "Preferito",
+    "chiudi": "Chiudi",
+    "su": "su {{strada}}",
+    "termina": "Termina",
+    "tra": "tra {{dist}}",
+    "attesaGps": "In attesa del GPS…"
+  },
+  "manovra": {
+    "depart": "Parti",
+    "arrive": "Arrivo",
+    "turn": "Svolta",
+    "continue": "Continua",
+    "new name": "Prosegui",
+    "merge": "Immettiti",
+    "fork": "Tieni",
+    "end of road": "Fine strada",
+    "roundabout": "Rotatoria",
+    "rotary": "Rotatoria",
+    "default": "Prosegui"
+  },
+  "direzione": {
+    "left": "a sinistra",
+    "right": "a destra",
+    "slight left": "leggermente a sinistra",
+    "slight right": "leggermente a destra",
+    "sharp left": "tutto a sinistra",
+    "sharp right": "tutto a destra",
+    "straight": "dritto",
+    "uturn": "inverti il senso"
+  },
+  "livello": {
+    "safe": "Sicuro",
+    "moderate": "Moderato",
+    "risk": "A rischio",
+    "danger": "Pericoloso"
+  },
+  "categoria": {
+    "scarsa_illuminazione": "Scarsa illuminazione",
+    "comportamenti_sospetti": "Comportamenti sospetti",
+    "strade_danneggiate": "Strade danneggiate",
+    "altro": "Altro"
+  },
+  "emergency": {
+    "titolo": "Emergenza",
+    "rilevamento": "Rilevamento posizione in corso…",
+    "errore": "Servizio non raggiungibile. Chiama comunque il 112.",
+    "tuaPosizione": "La tua posizione",
+    "indirizzoRicerca": "Indirizzo in ricerca…",
+    "posizioneNonDisp": "Posizione non disponibile.",
+    "chiudi": "Chiudi"
+  },
+  "segnalazione": {
+    "nuova": "Nuova segnalazione",
+    "categoria": "Categoria",
+    "posizione": "Posizione",
+    "nessunaPosizione": "Nessuna posizione scelta",
+    "usaPosizione": "Usa la mia posizione",
+    "scegliMappa": "Scegli sulla mappa",
+    "descrizione": "Descrizione (facoltativa)",
+    "invia": "Invia segnalazione",
+    "invio": "Invio…",
+    "inviata": "Segnalazione inviata. Sarà visibile dopo la verifica dell'operatore.",
+    "chiudi": "Chiudi",
+    "fab": "Nuova segnalazione",
+    "toccaMappa": "Tocca la mappa per scegliere il punto",
+    "annulla": "Annulla",
+    "nonAutenticato": "Devi essere autenticato per inviare una segnalazione",
+    "scegliPosizione": "Scegli prima una posizione",
+    "erroreInvio": "Invio non riuscito",
+    "geoNonDisp": "Geolocalizzazione non disponibile",
+    "posNonRilevata": "Posizione non rilevata"
+  },
+  "notifiche": {
+    "titolo": "Notifiche",
+    "tutte": "Tutte",
+    "nonLette": "Non lette",
+    "segnaLette": "Segna lette",
+    "nessuna": "Nessuna notifica",
+    "label": "Notifiche",
+    "labelNonLette": "Notifiche, {{count}} non lette"
+  },
+  "profilo": {
+    "titolo": "Il mio profilo",
+    "nome": "Nome",
+    "cognome": "Cognome",
+    "email": "Email",
+    "percorsoPreferito": "Percorso preferito",
+    "piuSicuro": "Più sicuro",
+    "bilanciato": "Bilanciato",
+    "riceviNotifiche": "Ricevi notifiche",
+    "lingua": "Lingua",
+    "salva": "Salva modifiche",
+    "aggiornato": "Profilo aggiornato con successo",
+    "erroreSalvataggio": "Errore durante il salvataggio",
+    "erroreCaricamento": "Impossibile caricare il profilo",
+    "mieiPercorsi": "I miei percorsi",
+    "nessunPreferito": "Nessun percorso preferito salvato.",
+    "cronologia": "Cronologia",
+    "nessunRecente": "Nessun percorso recente.",
+    "rimuovi": "Rimuovi"
+  },
+  "operatore": {
+    "segnalazioni": "Segnalazioni",
+    "inAttesa": "In attesa",
+    "approvate": "Approvate",
+    "rifiutate": "Rifiutate",
+    "caricamento": "Caricamento…",
+    "erroreCaricamento": "Impossibile caricare le segnalazioni.",
+    "nessuna": "Nessuna segnalazione.",
+    "approva": "Approva",
+    "rifiuta": "Rifiuta",
+    "archivia": "Archivia",
+    "utente": "Utente"
+  },
+  "zona": {
+    "stradaSenzaNome": "Strada senza nome",
+    "punteggio": "Punteggio sicurezza",
+    "distanza": "Distanza dal punto",
+    "segnalazioniVicine": "Segnalazioni vicine",
+    "ultimoAgg": "Ultimo aggiornamento: {{data}}",
+    "chiudi": "Chiudi"
+  },
+  "legenda": {
+    "titolo": "Sicurezza strade"
+  },
+  "login": {
+    "titolo": "Accedi",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Accedi",
+    "google": "Accedi con Google",
+    "noAccount": "Non hai un account?",
+    "errore": "Accesso non riuscito"
+  },
+  "register": {
+    "titolo": "Registrati",
+    "nome": "Nome",
+    "cognome": "Cognome",
+    "email": "Email",
+    "password": "Password",
+    "conferma": "Conferma password",
+    "submit": "Crea account",
+    "haiAccount": "Hai già un account?",
+    "compila": "Compila tutti i campi",
+    "emailNonValida": "Email non valida",
+    "passwordCorta": "La password deve avere almeno 6 caratteri",
+    "passwordDiverse": "Le password non coincidono",
+    "errore": "Registrazione non riuscita"
+  },
+  "lingua": "Lingua"
+}

@@ -1,0 +1,14 @@
+.app-shell {
+  height: 100%;
+}
+
+.app-content {
+  height: 100%;
+  padding-bottom: 54px;
+  box-sizing: border-box;
+}
+
+.home-map {
+  width: 100%;
+  height: 100%;
+}

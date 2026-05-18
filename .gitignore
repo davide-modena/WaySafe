@@ -1,3 +1,8 @@
+/CONTEXT/
+/CONTEXT.md
+CLAUDE.md
+.claude
+
 # Logs
 logs
 *.log
@@ -36,6 +41,9 @@ bower_components
 
 # Compiled binary addons (https://nodejs.org/api/addons.html)
 build/Release
+
+# CRA production build output
+/frontend/build/
 
 # Dependency directories
 node_modules/

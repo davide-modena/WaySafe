@@ -1,0 +1,66 @@
+[
+  {
+    "id": "P001",
+    "zona": "Centro storico",
+    "lat": 46.0668, "lng": 11.1213, "radiusM": 400,
+    "giorniSettimana": 7,
+    "fasceOrarie": ["08:00-14:00", "18:00-24:00"],
+    "frequenzaSettimanale": 14
+  },
+  {
+    "id": "P002",
+    "zona": "Stazione FS",
+    "lat": 46.0618, "lng": 11.1193, "radiusM": 300,
+    "giorniSettimana": 7,
+    "fasceOrarie": ["06:00-10:00", "16:00-22:00"],
+    "frequenzaSettimanale": 10
+  },
+  {
+    "id": "P003",
+    "zona": "Piazza Venezia",
+    "lat": 46.0730, "lng": 11.1215, "radiusM": 250,
+    "giorniSettimana": 5,
+    "fasceOrarie": ["10:00-18:00"],
+    "frequenzaSettimanale": 5
+  },
+  {
+    "id": "P004",
+    "zona": "Periferia nord",
+    "lat": 46.0850, "lng": 11.1250, "radiusM": 500,
+    "giorniSettimana": 3,
+    "fasceOrarie": ["22:00-02:00"],
+    "frequenzaSettimanale": 3
+  },
+  {
+    "id": "P005",
+    "zona": "Via Brennero",
+    "lat": 46.0780, "lng": 11.1290, "radiusM": 350,
+    "giorniSettimana": 4,
+    "fasceOrarie": ["20:00-00:00"],
+    "frequenzaSettimanale": 4
+  },
+  {
+    "id": "P006",
+    "zona": "Zona universitaria",
+    "lat": 46.0660, "lng": 11.1490, "radiusM": 400,
+    "giorniSettimana": 5,
+    "fasceOrarie": ["08:00-20:00"],
+    "frequenzaSettimanale": 7
+  },
+  {
+    "id": "P007",
+    "zona": "Periferia sud",
+    "lat": 46.0580, "lng": 11.1200, "radiusM": 400,
+    "giorniSettimana": 2,
+    "fasceOrarie": ["22:00-04:00"],
+    "frequenzaSettimanale": 2
+  },
+  {
+    "id": "P008",
+    "zona": "Piazza Fiera",
+    "lat": 46.0712, "lng": 11.1180, "radiusM": 300,
+    "giorniSettimana": 4,
+    "fasceOrarie": ["08:00-14:00", "16:00-22:00"],
+    "frequenzaSettimanale": 6
+  }
+]

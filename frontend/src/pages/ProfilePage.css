@@ -1,0 +1,162 @@
+.profile-page {
+  display: flex;
+  justify-content: center;
+  padding: 32px 24px;
+  min-height: 100%;
+  background: #f4f6f8;
+}
+
+.profile-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  max-width: 460px;
+}
+
+.profile-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 2px 14px rgba(0, 0, 0, 0.08);
+}
+
+.profile-sezione {
+  margin: 0;
+  font-size: 18px;
+  color: #1f2933;
+}
+
+.percorso-blocco h3 {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.percorso-vuoto {
+  margin: 0;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+.percorso-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.percorso-voce {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #f9fafb;
+  border-radius: 8px;
+}
+
+.percorso-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.percorso-info strong {
+  font-size: 13px;
+  color: #1f2933;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.percorso-info span {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.percorso-rimuovi {
+  flex-shrink: 0;
+  border: none;
+  background: none;
+  color: #e02424;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.profile-card h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+  color: #1d9e75;
+}
+
+.profile-card label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: #4b5563;
+}
+
+.profile-card input,
+.profile-card select {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.profile-check {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #1f2933;
+}
+
+.profile-check input {
+  width: 16px;
+  height: 16px;
+}
+
+.profile-save {
+  margin-top: 4px;
+  padding: 11px;
+  border: none;
+  border-radius: 8px;
+  background: #1d9e75;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.profile-save:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.profile-ok {
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: #e7f6ef;
+  color: #1d9e75;
+  font-size: 13px;
+}
+
+.profile-error {
+  margin: 0;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: #fde8e8;
+  color: #c0392b;
+  font-size: 13px;
+}

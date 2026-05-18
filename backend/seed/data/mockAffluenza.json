@@ -1,0 +1,62 @@
+[
+  {
+    "id": "A001", "zona": "Centro storico / Piazza Duomo",
+    "lat": 46.0668, "lng": 11.1213, "radiusM": 350,
+    "densita": "alta",
+    "fasceOrarie": { "mattina": "alta", "pomeriggio": "alta", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A002", "zona": "Stazione FS",
+    "lat": 46.0618, "lng": 11.1193, "radiusM": 250,
+    "densita": "alta",
+    "fasceOrarie": { "mattina": "alta", "pomeriggio": "media", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A003", "zona": "Piazza Venezia",
+    "lat": 46.0730, "lng": 11.1215, "radiusM": 200,
+    "densita": "media",
+    "fasceOrarie": { "mattina": "media", "pomeriggio": "alta", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A004", "zona": "Zona universitaria",
+    "lat": 46.0660, "lng": 11.1490, "radiusM": 400,
+    "densita": "media",
+    "fasceOrarie": { "mattina": "alta", "pomeriggio": "alta", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A005", "zona": "Periferia nord",
+    "lat": 46.0850, "lng": 11.1250, "radiusM": 500,
+    "densita": "bassa",
+    "fasceOrarie": { "mattina": "bassa", "pomeriggio": "bassa", "sera": "bassa", "notte": "bassa" }
+  },
+  {
+    "id": "A006", "zona": "Via Brennero",
+    "lat": 46.0780, "lng": 11.1290, "radiusM": 300,
+    "densita": "media",
+    "fasceOrarie": { "mattina": "alta", "pomeriggio": "media", "sera": "bassa", "notte": "bassa" }
+  },
+  {
+    "id": "A007", "zona": "Periferia sud",
+    "lat": 46.0580, "lng": 11.1200, "radiusM": 400,
+    "densita": "bassa",
+    "fasceOrarie": { "mattina": "bassa", "pomeriggio": "bassa", "sera": "bassa", "notte": "bassa" }
+  },
+  {
+    "id": "A008", "zona": "Piazza Fiera",
+    "lat": 46.0712, "lng": 11.1180, "radiusM": 250,
+    "densita": "media",
+    "fasceOrarie": { "mattina": "media", "pomeriggio": "alta", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A009", "zona": "Via Calepina / centro",
+    "lat": 46.0680, "lng": 11.1175, "radiusM": 200,
+    "densita": "alta",
+    "fasceOrarie": { "mattina": "alta", "pomeriggio": "alta", "sera": "media", "notte": "bassa" }
+  },
+  {
+    "id": "A010", "zona": "Periferia est",
+    "lat": 46.0710, "lng": 11.1400, "radiusM": 400,
+    "densita": "bassa",
+    "fasceOrarie": { "mattina": "bassa", "pomeriggio": "bassa", "sera": "bassa", "notte": "bassa" }
+  }
+]

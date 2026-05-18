@@ -1,0 +1,132 @@
+.notif-center {
+  position: relative;
+}
+
+.notif-bell {
+  position: relative;
+  border: none;
+  background: none;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.notif-badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #e02424;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.notif-dropdown {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  max-width: calc(100vw - 24px);
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.18);
+  z-index: 1200;
+  overflow: hidden;
+}
+
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f3f5;
+}
+
+.notif-header-azioni {
+  display: flex;
+  gap: 6px;
+}
+
+.notif-filtro {
+  border: 1px solid #d1d5db;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 3px 10px;
+  font-size: 11px;
+  cursor: pointer;
+  color: #374151;
+}
+
+.notif-filtro.attivo {
+  background: #1d9e75;
+  border-color: #1d9e75;
+  color: #ffffff;
+}
+
+.notif-lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.notif-vuoto {
+  padding: 24px 14px;
+  text-align: center;
+  color: #9ca3af;
+  font-size: 13px;
+}
+
+.notif-item {
+  padding: 11px 14px;
+  border-bottom: 1px solid #f1f3f5;
+  cursor: default;
+}
+
+.notif-item.non-letta {
+  background: #f0f9f5;
+  cursor: pointer;
+}
+
+.notif-item-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.notif-titolo {
+  font-size: 13px;
+  font-weight: 700;
+  color: #1f2933;
+}
+
+.notif-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1d9e75;
+  flex-shrink: 0;
+}
+
+.notif-messaggio {
+  margin: 4px 0 6px;
+  font-size: 12px;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.notif-data {
+  font-size: 11px;
+  color: #9ca3af;
+}
